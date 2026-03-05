@@ -12,7 +12,7 @@ import api from '@/lib/api';
 import toast from 'react-hot-toast';
 
 export default function JobsPage() {
-    const [jobs, setJobs] = useState([]);
+    const [jobs, setJobs] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
 

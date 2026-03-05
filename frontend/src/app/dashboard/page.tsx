@@ -3,14 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Briefcase, Calendar, MessageSquare, BookOpen, Settings, User, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Briefcase, Calendar, MessageSquare, BookOpen, Settings, User, ArrowRight, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/api';
 
 export default function DashboardPage() {
     const { user } = useAuth();
-    const [jobs, setJobs] = useState([]);
-    const [events, setEvents] = useState([]);
+    const [jobs, setJobs] = useState<any[]>([]);
+    const [events, setEvents] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

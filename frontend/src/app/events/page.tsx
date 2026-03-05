@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 
 export default function EventsPage() {
     const [activeTab, setActiveTab] = useState('all');
-    const [events, setEvents] = useState([]);
+    const [events, setEvents] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     const mockEvents = [

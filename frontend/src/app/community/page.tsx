@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 
 export default function CommunityPage() {
     const [activeCategory, setActiveCategory] = useState('All Discussions');
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     const categories = [
