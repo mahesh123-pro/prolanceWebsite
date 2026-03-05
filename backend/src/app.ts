@@ -21,10 +21,14 @@ app.use(express.urlencoded({ extended: true }));
 
 import authRoutes from './routes/authRoutes';
 import jobRoutes from './routes/jobRoutes';
+import eventRoutes from './routes/eventRoutes';
+import postRoutes from './routes/postRoutes';
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/posts', postRoutes);
 
 app.get('/api/health', (req: Request, res: Response) => {
     res.status(200).json({ status: 'ok', message: 'API is running' });

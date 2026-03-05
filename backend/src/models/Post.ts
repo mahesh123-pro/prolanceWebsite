@@ -1,23 +1,36 @@
-import mongoose, { Document, Model, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
-export interface IComment {
+export interface IComment extends Document {
     user: mongoose.Schema.Types.ObjectId;
     text: string;
-    name: string;
-    avatar?: string;
-    date: Date;
+    createdAt: Date;
 }
 
 export interface IPost extends Document {
     user: mongoose.Schema.Types.ObjectId;
     title: string;
-    text: string;
-    name: string;
-    avatar?: string;
-    category: 'Web Development' | 'AI / ML' | 'Cloud' | 'Startups' | 'Career advice';
-    likes: { user: mongoose.Schema.Types.ObjectId }[];
+    content: string;
+    category: string;
+    likes: mongoose.Schema.Types.ObjectId[];
     comments: IComment[];
 }
+
+const CommentSchema: Schema<IComment> = new Schema(
+    {
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+        },
+        text: {
+            type: String,
+            required: [true, 'Please add a comment text'],
+        },
+    },
+    {
+        timestamps: true,
+    }
+);
 
 const PostSchema: Schema<IPost> = new Schema(
     {
@@ -28,57 +41,32 @@ const PostSchema: Schema<IPost> = new Schema(
         },
         title: {
             type: String,
-            required: [true, 'Please add a question or title'],
+            required: [true, 'Please add a title'],
+            trim: true,
+            maxlength: [100, 'Title cannot be more than 100 characters'],
         },
-        text: {
+        content: {
             type: String,
-            required: [true, 'Please add post content'],
-        },
-        name: {
-            type: String,
-        },
-        avatar: {
-            type: String,
+            required: [true, 'Please add some content'],
         },
         category: {
             type: String,
-            enum: ['Web Development', 'AI / ML', 'Cloud', 'Startups', 'Career advice'],
-            required: true,
+            required: [true, 'Please add a category'],
         },
         likes: [
             {
-                user: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'User',
-                },
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
             },
         ],
-        comments: [
-            {
-                user: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'User',
-                },
-                text: {
-                    type: String,
-                    required: true,
-                },
-                name: {
-                    type: String,
-                },
-                avatar: {
-                    type: String,
-                },
-                date: {
-                    type: Date,
-                    default: Date.now,
-                },
-            },
-        ],
+        comments: [CommentSchema],
     },
     {
         timestamps: true,
     }
 );
 
-export default mongoose.model<IPost>('Post', PostSchema);
+const Post = mongoose.model<IPost>('Post', PostSchema);
+
+export { Post };
+export default Post;
