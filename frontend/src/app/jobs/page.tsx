@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Search, MapPin, Briefcase, DollarSign, Filter, BookmarkingPlus, Send } from 'lucide-react';
+import { Search, MapPin, Briefcase, DollarSign, Filter, BookmarkPlus, Send } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import api from '@/lib/api';
@@ -192,7 +192,7 @@ export default function JobsPage() {
                                                 </div>
                                                 <div className="flex items-center gap-3 w-full md:w-auto">
                                                     <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl shrink-0 group-hover:border-primary/30 group-hover:text-primary transition-all">
-                                                        <BookmarkingPlus className="h-5 w-5" />
+                                                        <BookmarkPlus className="h-5 w-5" />
                                                     </Button>
                                                     <Button className="flex-1 md:flex-none h-12 px-8 rounded-2xl shadow-lg shadow-primary/10 font-bold transition-transform group-hover:scale-[1.05]">
                                                         Apply Now <ArrowRight className="ml-2 h-4 w-4" />
