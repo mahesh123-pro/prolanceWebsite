@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
@@ -17,6 +18,10 @@ import { User, LogOut, LayoutDashboard, Settings, Bell, MessageSquare } from "lu
 
 export function Navbar() {
     const { user, logout } = useAuth();
+    const pathname = usePathname();
+
+    // Hide the regular navbar on all admin routes
+    if (pathname?.startsWith("/admin")) return null;
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
