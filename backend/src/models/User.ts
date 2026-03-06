@@ -8,19 +8,61 @@ export interface IUser extends Document {
     password?: string;
     role: 'guest' | 'user' | 'admin';
     googleId?: string;
+    username: string;
+    headline?: string;
     profilePicture?: string;
+    phoneNumber?: string;
+    dateOfBirth?: Date;
+    gender?: 'Male' | 'Female' | 'Other' | 'Prefer not to say';
     bio?: string;
-    location?: string;
+    locationDetails?: {
+        country?: string;
+        state?: string;
+        city?: string;
+        postalCode?: string;
+        address?: string;
+    };
     skills?: string[];
-    education?: any[];
-    experience?: any[];
-    certifications?: any[];
-    portfolioLinks?: string[];
+    currentRole?: string;
+    yearsOfExperience?: number;
+    resumeUrl?: string;
+    portfolioWebsite?: string;
     socialLinks?: {
         linkedin?: string;
         github?: string;
+        twitter?: string;
         website?: string;
     };
+    workPreferences?: {
+        availableForWork?: boolean;
+        workType?: ('Freelance' | 'Full-time' | 'Part-time' | 'Remote')[];
+        hourlyRate?: number;
+    };
+    recoveryEmail?: string;
+    education?: {
+        institution?: string;
+        degree?: string;
+        fieldOfStudy?: string;
+        from?: Date;
+        to?: Date;
+        current?: boolean;
+        description?: string;
+    }[];
+    experience?: {
+        title?: string;
+        company?: string;
+        location?: string;
+        from?: Date;
+        to?: Date;
+        current?: boolean;
+        description?: string;
+    }[];
+    certifications?: {
+        name?: string;
+        issuingOrganization?: string;
+        date?: Date;
+        url?: string;
+    }[];
     matchPassword: (enteredPassword: string) => Promise<boolean>;
     getSignedJwtToken: () => string;
 }
@@ -51,10 +93,55 @@ const UserSchema: Schema<IUser> = new Schema(
             default: 'user',
         },
         googleId: String,
+        username: {
+            type: String,
+            required: [true, 'Please add a username'],
+            unique: true,
+            trim: true,
+            minlength: [3, 'Username must be at least 3 characters'],
+        },
+        headline: {
+            type: String,
+            maxlength: [100, 'Headline cannot exceed 100 characters'],
+        },
         profilePicture: String,
+        phoneNumber: String,
+        dateOfBirth: Date,
+        gender: {
+            type: String,
+            enum: ['Male', 'Female', 'Other', 'Prefer not to say'],
+        },
         bio: String,
-        location: String,
+        locationDetails: {
+            country: String,
+            state: String,
+            city: String,
+            postalCode: String,
+            address: String,
+        },
         skills: [String],
+        currentRole: String,
+        yearsOfExperience: Number,
+        resumeUrl: String,
+        portfolioWebsite: String,
+        socialLinks: {
+            linkedin: String,
+            github: String,
+            twitter: String,
+            website: String,
+        },
+        workPreferences: {
+            availableForWork: {
+                type: Boolean,
+                default: false,
+            },
+            workType: {
+                type: [String],
+                enum: ['Freelance', 'Full-time', 'Part-time', 'Remote'],
+            },
+            hourlyRate: Number,
+        },
+        recoveryEmail: String,
         education: [
             {
                 institution: String,
@@ -85,12 +172,6 @@ const UserSchema: Schema<IUser> = new Schema(
                 url: String,
             },
         ],
-        portfolioLinks: [String],
-        socialLinks: {
-            linkedin: String,
-            github: String,
-            website: String,
-        },
     },
     {
         timestamps: true,
