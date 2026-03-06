@@ -34,6 +34,11 @@ app.get('/api/health', (req: Request, res: Response) => {
     res.status(200).json({ status: 'ok', message: 'API is running' });
 });
 
+// Root route
+app.get('/', (req: Request, res: Response) => {
+    res.send('Welcome to the Prolance API. Use /api/* for endpoints.');
+});
+
 // Error handling middleware
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     console.error(err.stack);

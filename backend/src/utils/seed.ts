@@ -22,6 +22,7 @@ const seedData = async () => {
             adminUser = await User.create({
                 name: 'Prolance Admin',
                 email: 'admin@prolance.com',
+                username: 'admin',
                 password: 'password123', // In real app, this would be hashed
             });
         }

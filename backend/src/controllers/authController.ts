@@ -12,6 +12,8 @@ const sendTokenResponse = (user: IUser, statusCode: number, res: Response) => {
             name: user.name,
             email: user.email,
             role: user.role,
+            username: user.username,
+            headline: user.headline,
             profilePicture: user.profilePicture,
         },
     });
@@ -22,12 +24,15 @@ const sendTokenResponse = (user: IUser, statusCode: number, res: Response) => {
 // @access  Public
 export const register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, username, headline } = req.body;
 
-        const userExists = await User.findOne({ email });
+        const userExists = await User.findOne({
+            $or: [{ email }, { username }]
+        });
 
         if (userExists) {
-            res.status(400).json({ error: 'User already exists' });
+            const field = userExists.email === email ? 'Email' : 'Username';
+            res.status(400).json({ error: `${field} already exists` });
             return;
         }
 
@@ -35,6 +40,8 @@ export const register = async (req: Request, res: Response, next: NextFunction):
             name,
             email,
             password,
+            username,
+            headline,
         });
 
         sendTokenResponse(user, 201, res);
@@ -78,6 +85,50 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
 // @desc    Get current logged in user
 // @route   GET /api/auth/me
 // @access  Private
+// @desc    Update user profile
+// @route   PUT /api/auth/updateprofile
+// @access  Private
+export const updateProfile = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const fieldsToUpdate = { ...req.body };
+
+        // Remove password from fields to update (should be handled by separate route)
+        delete fieldsToUpdate.password;
+        delete fieldsToUpdate.role;
+        delete fieldsToUpdate.email;
+
+        const user = await User.findById((req as any).user.id);
+
+        if (!user) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+
+        // List of fields that are allowed to be updated
+        const updateableFields = [
+            'name', 'username', 'phoneNumber', 'dateOfBirth', 'gender', 'bio',
+            'headline', 'locationDetails', 'skills', 'currentRole',
+            'yearsOfExperience', 'resumeUrl', 'portfolioWebsite',
+            'socialLinks', 'workPreferences', 'recoveryEmail'
+        ];
+
+        updateableFields.forEach(field => {
+            if (fieldsToUpdate[field] !== undefined) {
+                (user as any)[field] = fieldsToUpdate[field];
+            }
+        });
+
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            data: user,
+        });
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 export const getMe = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const user = await User.findById((req as any).user.id);
