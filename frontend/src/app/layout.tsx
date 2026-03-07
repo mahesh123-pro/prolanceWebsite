@@ -7,6 +7,8 @@ import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "react-hot-toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
+import { Footer } from "@/components/layout/Footer";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,12 +31,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
-      <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
+      <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-background text-foreground`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AuthProvider>
             <TooltipProvider>
               <Navbar />
-              <main className="flex-1 w-full">{children}</main>
+              <main className="flex-1 w-full flex flex-col">{children}</main>
+              <Footer />
               <Toaster position="bottom-right" />
             </TooltipProvider>
           </AuthProvider>

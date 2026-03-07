@@ -2,39 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Briefcase, Calendar, MessageSquare, BookOpen, Users, Star, TrendingUp } from "lucide-react";
+import { ArrowRight, Briefcase, Calendar, MessageSquare, BookOpen, Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, useInView } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
-
-// For Animated Counter
-const AnimatedCounter = ({ end, className }: { end: number, className?: string }) => {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
-
-  useEffect(() => {
-    if (isInView) {
-      let start = 0;
-      const duration = 2000;
-      const increment = end / (duration / 16);
-
-      const timer = setInterval(() => {
-        start += increment;
-        if (start > end) {
-          setCount(end);
-          clearInterval(timer);
-        } else {
-          setCount(Math.ceil(start));
-        }
-      }, 16);
-
-      return () => clearInterval(timer);
-    }
-  }, [end, isInView]);
-
-  return <span ref={ref} className={className}>{count}</span>;
-};
+import { useRef } from "react";
 
 // Fade In Component
 const FadeIn = ({ children, delay = 0, direction = "up", className = "" }: { children: React.ReactNode, delay?: number, direction?: "up" | "down" | "left" | "right", className?: string }) => {
@@ -76,41 +47,41 @@ export default function Home() {
 
             <FadeIn delay={0.2}>
               <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-foreground/80 leading-tight">
-                Connect. Learn.<br />
-                <span className="text-foreground">Grow Your Career.</span>
+                Accelerate Your<br />
+                <span className="text-foreground">Tech Career.</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={0.3}>
               <p className="max-w-[42rem] lg:mx-0 text-lg sm:text-xl text-muted-foreground mb-10 leading-relaxed font-medium">
-                The ultimate platform for students, professionals, and recruiters to discover opportunities, collaborate, and master new skills.
+                The exclusive networking hub bridging the gap between student developers, early-career tech professionals, and innovative startups hiring top talent.
               </p>
             </FadeIn>
 
             <FadeIn delay={0.4} className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
               <Button size="lg" className="h-14 px-8 text-base shadow-lg shadow-primary/25 transition-all hover:scale-105 hover:shadow-primary/40 rounded-full w-full sm:w-auto overflow-hidden relative group" asChild>
                 <Link href="/signup">
-                  <span className="relative z-10 flex items-center">Get Started <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" /></span>
+                  <span className="relative z-10 flex items-center">Join the Network <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" /></span>
                   <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="h-14 px-8 text-base transition-all hover:scale-105 hover:bg-primary/5 hover:text-primary hover:border-primary/50 rounded-full w-full sm:w-auto shadow-sm" asChild>
                 <Link href="/jobs">
-                  Explore Jobs
+                  Explore Tech Jobs
                 </Link>
               </Button>
             </FadeIn>
 
             <FadeIn delay={0.6} className="mt-12 flex items-center gap-6 justify-center lg:justify-start opacity-80">
               <div className="flex -space-x-3">
-                {[1, 2, 3, 4].map((i) => (
+                {[11, 12, 13, 14].map((i) => (
                   <div key={i} className="h-10 w-10 rounded-full border-2 border-background bg-secondary flex items-center justify-center overflow-hidden">
-                    <Image src={`/images/hero.png`} alt="User" width={40} height={40} className="object-cover h-full w-full" />
+                    <img src={`https://i.pravatar.cc/100?img=${i}`} alt={`Beta User ${i}`} className="object-cover h-full w-full" />
                   </div>
                 ))}
               </div>
               <div className="text-sm font-medium">
-                <span className="text-primary font-bold">10,000+</span> professionals joined
+                <span className="text-primary font-bold">Trusted by</span> early beta users
               </div>
             </FadeIn>
           </div>
@@ -139,8 +110,8 @@ export default function Home() {
                     <Star className="h-6 w-6 fill-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-foreground">Top Rated Platform</p>
-                    <p className="text-sm text-muted-foreground">Join the best network</p>
+                    <p className="font-bold text-foreground">Top Rated Developer Platform</p>
+                    <p className="text-sm text-muted-foreground">Join the elite network</p>
                   </div>
                 </div>
               </motion.div>
@@ -149,45 +120,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Section with animated counters */}
-      <section className="py-12 border-y bg-background relative z-20">
-        <div className="container px-4 mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x divide-border">
-            <div className="flex flex-col items-center justify-center">
-              <div className="text-3xl md:text-5xl font-extrabold text-primary mb-2 flex">
-                <AnimatedCounter end={500} /><span className="text-primary">+</span>
-              </div>
-              <div className="text-sm text-muted-foreground font-medium uppercase tracking-wider">Active Jobs</div>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <div className="text-3xl md:text-5xl font-extrabold text-primary mb-2 flex">
-                <AnimatedCounter end={10} />k<span className="text-primary">+</span>
-              </div>
-              <div className="text-sm text-muted-foreground font-medium uppercase tracking-wider">Users</div>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <div className="text-3xl md:text-5xl font-extrabold text-primary mb-2 flex">
-                <AnimatedCounter end={150} /><span className="text-primary">+</span>
-              </div>
-              <div className="text-sm text-muted-foreground font-medium uppercase tracking-wider">Events</div>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <div className="text-3xl md:text-5xl font-extrabold text-primary mb-2 flex">
-                <AnimatedCounter end={99} />%
-              </div>
-              <div className="text-sm text-muted-foreground font-medium uppercase tracking-wider">Satisfaction</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Features Section */}
       <section className="py-24 bg-gradient-to-b from-background to-muted/30">
         <div className="container px-4 md:px-6 mx-auto">
           <FadeIn className="text-center mb-16">
-            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-foreground inline-block">Everything you need in one place</h2>
+            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-foreground inline-block">Everything you need to scale your impact</h2>
             <p className="text-xl text-muted-foreground max-w-[46rem] mx-auto font-medium">
-              Our comprehensive suite of tools helps you build your professional identity and accelerate your career growth exponentially.
+              A curated suite of tools engineered to help you securely build your identity, collaborate globally, and accelerate your career.
             </p>
           </FadeIn>
 
@@ -209,8 +148,8 @@ export default function Home() {
                   <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-6 group-hover:scale-110 shadow-sm">
                     <Briefcase className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors" />
                   </div>
-                  <h3 className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors">Jobs & Internships</h3>
-                  <p className="text-muted-foreground flex-1 leading-relaxed">Discover top career opportunities tailored to your unique skill set and experience level. Apply easily and get hired faster.</p>
+                  <h3 className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors">Tech Opportunities</h3>
+                  <p className="text-muted-foreground flex-1 leading-relaxed">Discover internships, full-time engineering roles, and exclusive freelance gigs posted directly by innovative companies.</p>
                 </div>
               </div>
             </FadeIn>
@@ -232,8 +171,8 @@ export default function Home() {
                   <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:-rotate-6 group-hover:scale-110 shadow-sm">
                     <Calendar className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors" />
                   </div>
-                  <h3 className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors">Tech Events</h3>
-                  <p className="text-muted-foreground flex-1 leading-relaxed">Join hackathons, workshops, and meetups to expand your network and learn practically. Connect with industry leaders.</p>
+                  <h3 className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors">Developer Events</h3>
+                  <p className="text-muted-foreground flex-1 leading-relaxed">Filter and RSVP to hackathons, UI/UX workshops, and local meetups to expand your network in real time.</p>
                 </div>
               </div>
             </FadeIn>
@@ -255,8 +194,8 @@ export default function Home() {
                   <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-6 group-hover:scale-110 shadow-sm">
                     <MessageSquare className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors" />
                   </div>
-                  <h3 className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors">Community</h3>
-                  <p className="text-muted-foreground flex-1 leading-relaxed">Engage in vibrant discussions, ask questions, and share knowledge with peers and mentors. Find your technical tribe.</p>
+                  <h3 className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors">Vibrant Community</h3>
+                  <p className="text-muted-foreground flex-1 leading-relaxed">Engage in technical discussions, ask architectural questions, and share project challenges with peers and senior mentors.</p>
                 </div>
               </div>
             </FadeIn>
@@ -278,8 +217,73 @@ export default function Home() {
                   <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:-rotate-6 group-hover:scale-110 shadow-sm">
                     <BookOpen className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors" />
                   </div>
-                  <h3 className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors">Resources</h3>
-                  <p className="text-muted-foreground flex-1 leading-relaxed">Access curated learning materials, roadmaps, and tutorials to stay ahead of the curve. Filtered for high quality.</p>
+                  <h3 className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors">Curated Resources</h3>
+                  <p className="text-muted-foreground flex-1 leading-relaxed">Access high-quality learning materials, developer roadmaps, and interview prep tutorials to stay consistently ahead.</p>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-24 bg-background relative z-20 overflow-hidden">
+        <div className="container px-4 md:px-6 mx-auto">
+          <FadeIn className="text-center mb-16">
+            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl mb-6">Loved by our beta users</h2>
+            <p className="text-xl text-muted-foreground max-w-[46rem] mx-auto font-medium">
+              See what student developers and recruiters are already saying about their experience on Prolance.
+            </p>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Testimonial 1 */}
+            <FadeIn delay={0.1}>
+              <div className="bg-muted/30 border border-border/50 rounded-3xl p-8 relative flex flex-col h-full hover:shadow-lg transition-all">
+                <Quote className="absolute top-6 right-8 h-12 w-12 text-primary/10 rotate-180" />
+                <p className="text-lg leading-relaxed text-foreground/80 mb-6 flex-1">
+                  "Prolance totally changed how I network. I found a startup looking for a frontend developer and secured my first serious internship within a week of creating my profile."
+                </p>
+                <div className="flex items-center gap-4">
+                  <img src="https://i.pravatar.cc/100?img=33" alt="Sarah J" className="h-12 w-12 rounded-full ring-2 ring-primary/20 object-cover" />
+                  <div>
+                    <h4 className="font-bold text-foreground">Sarah J.</h4>
+                    <p className="text-sm text-primary">CS Student</p>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Testimonial 2 */}
+            <FadeIn delay={0.2}>
+              <div className="bg-primary border border-primary-foreground/10 rounded-3xl p-8 relative flex flex-col h-full shadow-xl shadow-primary/20 text-primary-foreground transform md:-translate-y-4">
+                <Quote className="absolute top-6 right-8 h-12 w-12 text-primary-foreground/20 rotate-180" />
+                <p className="text-lg leading-relaxed mb-6 flex-1">
+                  "As a technical recruiter, sifting through generalized job boards is exhausting. Prolance provides a concentrated pool of highly motivated and skilled tech talent."
+                </p>
+                <div className="flex items-center gap-4">
+                  <img src="https://i.pravatar.cc/100?img=53" alt="Mark T" className="h-12 w-12 rounded-full ring-2 ring-primary-foreground/50 object-cover" />
+                  <div>
+                    <h4 className="font-bold">Mark T.</h4>
+                    <p className="text-sm opacity-80">Technical Recruiter</p>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Testimonial 3 */}
+            <FadeIn delay={0.3}>
+              <div className="bg-muted/30 border border-border/50 rounded-3xl p-8 relative flex flex-col h-full hover:shadow-lg transition-all">
+                <Quote className="absolute top-6 right-8 h-12 w-12 text-primary/10 rotate-180" />
+                <p className="text-lg leading-relaxed text-foreground/80 mb-6 flex-1">
+                  "The community aspect is incredible. Whenever I get stuck on a complex bug, I can bounce ideas off senior devs who genuinely want to help out. Highly recommend!"
+                </p>
+                <div className="flex items-center gap-4">
+                  <img src="https://i.pravatar.cc/100?img=12" alt="David L" className="h-12 w-12 rounded-full ring-2 ring-primary/20 object-cover" />
+                  <div>
+                    <h4 className="font-bold text-foreground">David L.</h4>
+                    <p className="text-sm text-primary">Junior Full-Stack Dev</p>
+                  </div>
                 </div>
               </div>
             </FadeIn>
@@ -293,8 +297,8 @@ export default function Home() {
         <div className="absolute inset-0 bg-[url('/images/hero.png')] opacity-10 mix-blend-overlay bg-cover bg-center"></div>
         <div className="container px-4 md:px-6 mx-auto relative z-10 text-center">
           <FadeIn>
-            <h2 className="text-3xl md:text-5xl font-bold text-primary-foreground mb-6">Ready to accelerate your career?</h2>
-            <p className="text-primary-foreground/80 text-lg md:text-xl max-w-[40rem] mx-auto mb-10 font-medium">Join thousands of professionals already finding their next huge opportunity through Prolance.</p>
+            <h2 className="text-3xl md:text-5xl font-bold text-primary-foreground mb-6">Ready to execute your career roadmap?</h2>
+            <p className="text-primary-foreground/80 text-lg md:text-xl max-w-[40rem] mx-auto mb-10 font-medium">Join ambitious tech professionals building their future exclusively on Prolance.</p>
             <Button size="lg" variant="secondary" className="h-14 px-10 text-lg font-bold shadow-2xl hover:scale-105 transition-transform rounded-full" asChild>
               <Link href="/signup">
                 Create Your Free Profile
