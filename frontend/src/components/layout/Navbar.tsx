@@ -16,15 +16,26 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, LogOut, LayoutDashboard, Settings, Bell, MessageSquare } from "lucide-react";
 
+import { useState, useEffect } from "react";
+
 export function Navbar() {
     const { user, logout } = useAuth();
     const pathname = usePathname();
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     // Hide the regular navbar on all admin routes
     if (pathname?.startsWith("/admin")) return null;
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <header className={`sticky top-0 z-50 w-full border-b transition-all duration-300 ${scrolled ? "bg-background/95 backdrop-blur-md shadow-md supports-[backdrop-filter]:bg-background/80 py-0" : "bg-transparent border-transparent py-2"}`}>
             <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-8">
                 <div className="flex items-center gap-6">
                     <Link href="/" className="flex items-center space-x-2">
