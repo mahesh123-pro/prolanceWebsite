@@ -40,6 +40,7 @@ export function Footer() {
                             <li><Link href="/events" className="inline-flex items-center group hover:text-primary transition-colors duration-300"><span className="w-0 overflow-hidden group-hover:w-3 transition-all duration-300 group-hover:mr-1">›</span>Events</Link></li>
                             <li><Link href="/community" className="inline-flex items-center group hover:text-primary transition-colors duration-300"><span className="w-0 overflow-hidden group-hover:w-3 transition-all duration-300 group-hover:mr-1">›</span>Community</Link></li>
                             <li><Link href="/resources" className="inline-flex items-center group hover:text-primary transition-colors duration-300"><span className="w-0 overflow-hidden group-hover:w-3 transition-all duration-300 group-hover:mr-1">›</span>Resources</Link></li>
+                            <li><Link href="/testimonials" className="inline-flex items-center group hover:text-primary transition-colors duration-300"><span className="w-0 overflow-hidden group-hover:w-3 transition-all duration-300 group-hover:mr-1">›</span>Testimonials</Link></li>
                         </ul>
                     </div>
 
