@@ -28,6 +28,98 @@ const FadeIn = ({ children, delay = 0, direction = "up", className = "" }: { chi
   );
 };
 
+// Global Network Premium SVG Component
+const GlobalNetworkSVG = () => (
+  <div className="w-full relative pointer-events-none flex items-center justify-center">
+    <style dangerouslySetInnerHTML={{
+      __html: `
+      @keyframes svgDash { to { stroke-dashoffset: -100; } }
+      @keyframes svgFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-12px); }
+      }
+      .node-glow { filter: drop-shadow(0 0 10px hsl(var(--primary) / 0.7)); }
+      .path-glow { filter: drop-shadow(0 0 6px hsl(var(--primary) / 0.4)); }
+    `}} />
+    <svg viewBox="50 -100 1100 800" className="w-[120%] h-auto md:w-full max-w-5xl" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="lineGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.1" />
+          <stop offset="50%" stopColor="hsl(var(--primary))" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.1" />
+        </linearGradient>
+        <linearGradient id="lineGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0" />
+          <stop offset="50%" stopColor="hsl(var(--primary))" stopOpacity="1" />
+          <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
+        </linearGradient>
+        <radialGradient id="nodeGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="1" />
+          <stop offset="80%" stopColor="hsl(var(--primary))" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.2" />
+        </radialGradient>
+      </defs>
+
+      {/* Abstract Background Elements */}
+      <circle cx="600" cy="300" r="350" fill="hsl(var(--primary))" opacity="0.02" className="animate-pulse" style={{ animationDuration: '7s' }} />
+      <circle cx="600" cy="300" r="250" fill="hsl(var(--primary))" opacity="0.04" className="animate-pulse" style={{ animationDuration: '5s' }} />
+      <circle cx="600" cy="300" r="150" fill="transparent" stroke="hsl(var(--primary))" strokeWidth="1" opacity="0.1" strokeDasharray="4 8" className="animate-[spin_40s_linear_infinite] origin-center" />
+
+      {/* Network Connections */}
+      <g fill="none" className="path-glow">
+        <path d="M 150 300 Q 350 100, 600 300 T 1050 300" stroke="url(#lineGrad1)" strokeWidth="3.5" opacity="0.9" />
+        <path d="M 100 400 Q 300 550, 500 350 T 950 180" stroke="url(#lineGrad2)" strokeWidth="2.5" strokeDasharray="8 8" className="animate-[dash_3s_linear_infinite]" style={{ animationDirection: 'reverse', animationName: 'svgDash' }} />
+        <path d="M 250 150 Q 500 50, 750 250 T 1100 450" stroke="url(#lineGrad1)" strokeWidth="1.5" />
+
+        {/* Additional complex routing */}
+        <polyline points="150,300 320,220 500,350 750,250 900,380 1050,300" stroke="url(#lineGrad2)" strokeWidth="1" opacity="0.4" />
+        <polyline points="100,400 350,450 600,300 850,450 1100,450" stroke="url(#lineGrad1)" strokeWidth="1" opacity="0.3" strokeDasharray="4 4" />
+        <path d="M 320 220 L 500 150 L 600 300 L 750 150 L 900 200" stroke="url(#lineGrad1)" strokeWidth="0.5" opacity="0.5" />
+      </g>
+
+      {/* Connection Nodes */}
+      <g className="node-glow" fill="url(#nodeGrad)">
+        {/* Main Central Nodes */}
+        <g style={{ animation: 'svgFloat 6s ease-in-out infinite' }} className="origin-center">
+          <circle cx="600" cy="300" r="22" fill="url(#nodeGrad)" stroke="hsl(var(--background))" strokeWidth="4" />
+          <circle cx="600" cy="300" r="45" fill="none" stroke="hsl(var(--primary))" strokeWidth="1.5" opacity="0.5" className="animate-[ping_4s_ease-in-out_infinite]" />
+        </g>
+
+        {/* Secondary Nodes */}
+        <g style={{ animation: 'svgFloat 5s ease-in-out infinite 1s' }}>
+          <circle cx="350" cy="180" r="14" stroke="hsl(var(--background))" strokeWidth="3" />
+        </g>
+        <g style={{ animation: 'svgFloat 7s ease-in-out infinite 0.5s' }}>
+          <circle cx="850" cy="420" r="16" stroke="hsl(var(--background))" strokeWidth="3" />
+        </g>
+        <g style={{ animation: 'svgFloat 4s ease-in-out infinite 2s' }}>
+          <circle cx="500" cy="350" r="12" stroke="hsl(var(--background))" strokeWidth="2.5" className="animate-pulse" />
+        </g>
+        <g style={{ animation: 'svgFloat 6s ease-in-out infinite 1.5s' }}>
+          <circle cx="750" cy="250" r="14" stroke="hsl(var(--background))" strokeWidth="3" />
+        </g>
+
+        {/* End Nodes */}
+        <circle cx="150" cy="300" r="10" stroke="hsl(var(--background))" strokeWidth="2" />
+        <circle cx="1050" cy="300" r="12" stroke="hsl(var(--background))" strokeWidth="2" />
+        <circle cx="100" cy="400" r="8" stroke="hsl(var(--background))" strokeWidth="1.5" className="animate-pulse" />
+        <circle cx="950" cy="180" r="10" stroke="hsl(var(--background))" strokeWidth="2" />
+        <circle cx="250" cy="150" r="8" stroke="hsl(var(--background))" strokeWidth="1.5" />
+        <circle cx="1100" cy="450" r="8" stroke="hsl(var(--background))" strokeWidth="1.5" className="animate-pulse" />
+
+        {/* Polyline intersections */}
+        <circle cx="320" cy="220" r="6" stroke="hsl(var(--background))" strokeWidth="1.5" />
+        <circle cx="900" cy="380" r="6" stroke="hsl(var(--background))" strokeWidth="1.5" />
+        <circle cx="350" cy="450" r="5" stroke="hsl(var(--background))" strokeWidth="1" />
+        <circle cx="850" cy="450" r="7" stroke="hsl(var(--background))" strokeWidth="1.5" />
+        <circle cx="500" cy="150" r="7" stroke="hsl(var(--background))" strokeWidth="1.5" />
+        <circle cx="750" cy="150" r="7" stroke="hsl(var(--background))" strokeWidth="1.5" />
+        <circle cx="900" cy="200" r="5" stroke="hsl(var(--background))" strokeWidth="1" />
+      </g>
+    </svg>
+  </div>
+);
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)]">
@@ -223,6 +315,24 @@ export default function Home() {
               </div>
             </FadeIn>
           </div>
+        </div>
+      </section>
+
+      {/* Global Network Section */}
+      <section className="py-24 bg-background relative overflow-hidden border-y border-border/10">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+        <div className="container px-4 md:px-6 mx-auto relative z-10">
+          <FadeIn className="text-center mb-16">
+            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">Built for Global Connectivity</h2>
+            <p className="text-xl text-muted-foreground max-w-[46rem] mx-auto font-medium">
+              Join thousands of professionals in a seamlessly interconnected ecosystem designed to accelerate your career growth.
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={0.3} className="relative w-full rounded-3xl border border-primary/10 bg-gradient-to-b from-muted/30 to-background p-4 md:p-12 flex items-center justify-center shadow-2xl shadow-primary/5">
+            <div className="absolute inset-0 bg-primary/5 blur-3xl rounded-full" />
+            <GlobalNetworkSVG />
+          </FadeIn>
         </div>
       </section>
 
