@@ -1,0 +1,37 @@
+﻿
+C:\Users\gayat\OneDrive\Desktop\My_Projects\prolance\frontend\src\app\admin\dashboard\page.tsx
+   32:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  119:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\gayat\OneDrive\Desktop\My_Projects\prolance\frontend\src\app\admin\events\page.tsx
+  30:31  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  66:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  90:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\gayat\OneDrive\Desktop\My_Projects\prolance\frontend\src\app\admin\jobs\page.tsx
+  73:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  97:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\gayat\OneDrive\Desktop\My_Projects\prolance\frontend\src\app\admin\layout.tsx
+  37:61  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\gayat\OneDrive\Desktop\My_Projects\prolance\frontend\src\app\admin\login\page.tsx
+  47:28  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\gayat\OneDrive\Desktop\My_Projects\prolance\frontend\src\app\admin\resources\page.tsx
+  24:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:30  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  78:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\gayat\OneDrive\Desktop\My_Projects\prolance\frontend\src\app\admin\testimonials\page.tsx
+  164:81  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  164:93  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\gayat\OneDrive\Desktop\My_Projects\prolance\frontend\src\app\admin\users\page.tsx
+   67:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   91:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  112:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Γ£û 18 problems (18 errors, 0 warnings)
+

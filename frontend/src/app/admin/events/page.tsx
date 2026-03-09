@@ -27,7 +27,7 @@ interface EventItem {
     eventType: string;
     registrationLink: string;
     postedBy?: { name: string; email: string };
-    attendees: any[];
+    attendees: Record<string, string | number | boolean>[];
     createdAt: string;
 }
 
@@ -62,7 +62,8 @@ export default function AdminEventsPage() {
                 );
                 setEvents(res.data.data);
                 setPagination((p) => ({ ...p, ...res.data.pagination }));
-            } catch (err: any) {
+            } catch (error) {
+                const err = error as { response?: { data?: { error?: string; message?: string } } };
                 toast.error(err.response?.data?.error || "Failed to load events");
             } finally {
                 setLoading(false);
@@ -73,8 +74,7 @@ export default function AdminEventsPage() {
 
     useEffect(() => {
         fetchEvents(1);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedSearch]);
+    }, [debouncedSearch, fetchEvents]);
 
     const handleDelete = async (id: string, title: string) => {
         if (!confirm(`Delete event "${title}"? This cannot be undone.`)) return;
@@ -86,7 +86,8 @@ export default function AdminEventsPage() {
             });
             toast.success(`Event "${title}" deleted`);
             fetchEvents(pagination.page);
-        } catch (err: any) {
+        } catch (error) {
+            const err = error as { response?: { data?: { error?: string; message?: string } } };
             toast.error(err.response?.data?.error || "Delete failed");
         } finally {
             setActionId(null);

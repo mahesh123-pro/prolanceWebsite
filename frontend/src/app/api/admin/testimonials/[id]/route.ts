@@ -1,13 +1,11 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import dbConnect from '@/lib/dbConnect';
 import Testimonial from '@/models/Testimonial';
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
-    const cookieStore = await cookies();
-    const session = cookieStore.get('admin_session');
+    const authHeader = req.headers.get('Authorization');
 
-    if (!session || session.value !== 'authenticated') {
+    if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader.length < 15) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -35,10 +33,9 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 }
 
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
-    const cookieStore = await cookies();
-    const session = cookieStore.get('admin_session');
+    const authHeader = req.headers.get('Authorization');
 
-    if (!session || session.value !== 'authenticated') {
+    if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader.length < 15) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

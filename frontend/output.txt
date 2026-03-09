@@ -1,0 +1,17 @@
+collections: testimonials, users, posts, events, jobs
+testimonials count: 1
+testimonials snippets: [
+  {
+    "_id": "69ad333bb74175b0e95d83ac",
+    "full_name": "Mahesh",
+    "role": "student",
+    "company": "MLRITM",
+    "message": "NICE WEBSITE, bro i connected lot of peoples in this",
+    "rating": 4,
+    "status": "pending",
+    "createdAt": "2026-03-08T08:28:43.522Z",
+    "updatedAt": "2026-03-08T08:28:43.522Z",
+    "__v": 0
+  }
+]
+Testimonial count: 0

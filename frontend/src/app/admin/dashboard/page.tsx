@@ -27,12 +27,10 @@ interface Stats {
 function BarChart({
     data,
     valueKey,
-    label,
     color,
 }: {
-    data: any[];
+    data: Record<string, string | number | boolean>[];
     valueKey: string;
-    label: string;
     color: string;
 }) {
     const maxVal = Math.max(...data.map((d) => d[valueKey]), 1);
@@ -117,7 +115,8 @@ export default function AdminDashboardPage() {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setStats(res.data.data);
-        } catch (err: any) {
+        } catch (error) {
+            const err = error as { response?: { data?: { error?: string; message?: string } } };
             setError(err.response?.data?.error || "Failed to load stats");
         } finally {
             setLoading(false);
@@ -157,7 +156,7 @@ export default function AdminDashboardPage() {
                 <div>
                     <h1 className="dash-title">Dashboard</h1>
                     <p className="dash-subtitle">
-                        Welcome back, Admin — here's what's happening today.
+                        Welcome back, Admin &mdash; here&apos;s what&apos;s happening today.
                     </p>
                 </div>
                 <button onClick={fetchStats} className="dash-refresh-btn">
@@ -199,7 +198,6 @@ export default function AdminDashboardPage() {
                         <BarChart
                             data={stats.userGrowth}
                             valueKey="users"
-                            label="Users"
                             color="linear-gradient(180deg, #6366f1, #8b5cf6)"
                         />
                     ) : (
@@ -216,7 +214,6 @@ export default function AdminDashboardPage() {
                         <BarChart
                             data={stats.jobGrowth}
                             valueKey="jobs"
-                            label="Jobs"
                             color="linear-gradient(180deg, #10b981, #059669)"
                         />
                     ) : (

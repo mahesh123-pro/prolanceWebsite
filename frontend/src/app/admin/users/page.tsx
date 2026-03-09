@@ -63,7 +63,8 @@ export default function AdminUsersPage() {
                 );
                 setUsers(res.data.data);
                 setPagination((p) => ({ ...p, ...res.data.pagination }));
-            } catch (err: any) {
+            } catch (error) {
+                const err = error as { response?: { data?: { error?: string; message?: string } } };
                 toast.error(err.response?.data?.error || "Failed to load users");
             } finally {
                 setLoading(false);
@@ -74,8 +75,7 @@ export default function AdminUsersPage() {
 
     useEffect(() => {
         fetchUsers(1);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedSearch]);
+    }, [debouncedSearch, fetchUsers]);
 
     const handleDelete = async (id: string, name: string) => {
         if (!confirm(`Delete user "${name}"? This cannot be undone.`)) return;
@@ -87,7 +87,8 @@ export default function AdminUsersPage() {
             });
             toast.success(`User "${name}" deleted`);
             fetchUsers(pagination.page);
-        } catch (err: any) {
+        } catch (error) {
+            const err = error as { response?: { data?: { error?: string; message?: string } } };
             toast.error(err.response?.data?.error || "Delete failed");
         } finally {
             setActionId(null);
@@ -107,7 +108,8 @@ export default function AdminUsersPage() {
             setUsers((prev) =>
                 prev.map((u) => (u._id === id ? { ...u, role: res.data.data.role } : u))
             );
-        } catch (err: any) {
+        } catch (error) {
+            const err = error as { response?: { data?: { error?: string; message?: string } } };
             toast.error(err.response?.data?.error || "Action failed");
         } finally {
             setActionId(null);
@@ -217,8 +219,8 @@ export default function AdminUsersPage() {
                                                     onClick={() => handleSuspend(u._id, u.role, u.name)}
                                                     disabled={actionId === u._id}
                                                     className={`action-btn ${u.role === "guest"
-                                                            ? "action-btn-unsuspend"
-                                                            : "action-btn-suspend"
+                                                        ? "action-btn-unsuspend"
+                                                        : "action-btn-suspend"
                                                         }`}
                                                 >
                                                     {actionId === u._id ? (

@@ -21,8 +21,8 @@ interface PostItem {
     category: string;
     content: string;
     user?: { name: string; email: string; username: string };
-    likes: any[];
-    comments: any[];
+    likes: Record<string, string | number | boolean>[];
+    comments: Record<string, string | number | boolean>[];
     createdAt: string;
 }
 
@@ -50,7 +50,8 @@ export default function AdminResourcesPage() {
                 );
                 setPosts(res.data.data);
                 setPagination((p) => ({ ...p, ...res.data.pagination }));
-            } catch (err: any) {
+            } catch (error) {
+                const err = error as { response?: { data?: { error?: string; message?: string } } };
                 toast.error(err.response?.data?.error || "Failed to load resources");
             } finally {
                 setLoading(false);
@@ -61,8 +62,7 @@ export default function AdminResourcesPage() {
 
     useEffect(() => {
         fetchPosts(1);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedSearch]);
+    }, [debouncedSearch, fetchPosts]);
 
     const handleDelete = async (id: string, title: string) => {
         if (!confirm(`Delete resource "${title}"? This cannot be undone.`)) return;
@@ -74,7 +74,8 @@ export default function AdminResourcesPage() {
             });
             toast.success(`Resource "${title}" deleted`);
             fetchPosts(pagination.page);
-        } catch (err: any) {
+        } catch (error) {
+            const err = error as { response?: { data?: { error?: string; message?: string } } };
             toast.error(err.response?.data?.error || "Delete failed");
         } finally {
             setActionId(null);

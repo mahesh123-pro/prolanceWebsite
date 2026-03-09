@@ -4,157 +4,158 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import {
-    Shield,
-    Mail,
-    Lock,
-    Eye,
-    EyeOff,
-    AlertCircle,
-    Loader2,
+  Shield,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  AlertCircle,
+  Loader2,
 } from "lucide-react";
 import api from "@/lib/api";
 
 export default function AdminLoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
-    const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
 
-    // Guard: redirect if already logged in as admin
-    useEffect(() => {
-        const adminToken = localStorage.getItem("adminToken");
-        if (adminToken) {
-            router.push("/admin/dashboard");
-        }
-    }, [router]);
+  // Guard: redirect if already logged in as admin
+  useEffect(() => {
+    const adminToken = localStorage.getItem("adminToken");
+    if (adminToken) {
+      router.push("/admin/dashboard");
+    }
+  }, [router]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError("");
-        setLoading(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-        try {
-            const res = await api.post("/admin/login", { email, password });
-            if (res.data.success) {
-                localStorage.setItem("adminToken", res.data.token);
-                localStorage.setItem("adminUser", JSON.stringify(res.data.user));
-                toast.success("Welcome back, Admin!");
-                router.push("/admin/dashboard");
-            }
-        } catch (err: any) {
-            const msg =
-                err.response?.data?.error || "Login failed. Please try again.";
-            setError(msg);
-            toast.error(msg);
-        } finally {
-            setLoading(false);
-        }
-    };
+    try {
+      const res = await api.post("/admin/login", { email, password });
+      if (res.data.success) {
+        localStorage.setItem("adminToken", res.data.token);
+        localStorage.setItem("adminUser", JSON.stringify(res.data.user));
+        toast.success("Welcome back, Admin!");
+        router.push("/admin/dashboard");
+      }
+    } catch (error) {
+      const err = error as { response?: { data?: { error?: string; message?: string } } };
+      const msg =
+        err.response?.data?.error || "Login failed. Please try again.";
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
-        <div className="admin-login-bg min-h-screen flex items-center justify-center p-4">
-            {/* Animated background blobs */}
-            <div className="admin-blob admin-blob-1" />
-            <div className="admin-blob admin-blob-2" />
-            <div className="admin-blob admin-blob-3" />
+  return (
+    <div className="admin-login-bg min-h-screen flex items-center justify-center p-4">
+      {/* Animated background blobs */}
+      <div className="admin-blob admin-blob-1" />
+      <div className="admin-blob admin-blob-2" />
+      <div className="admin-blob admin-blob-3" />
 
-            <div className="admin-login-card">
-                {/* Header */}
-                <div className="admin-login-header">
-                    <div className="admin-shield-icon">
-                        <Shield size={28} strokeWidth={1.5} />
-                    </div>
-                    <h1 className="admin-login-title">Admin Portal</h1>
-                    <p className="admin-login-subtitle">
-                        Secure access for authorized administrators only
-                    </p>
-                </div>
+      <div className="admin-login-card">
+        {/* Header */}
+        <div className="admin-login-header">
+          <div className="admin-shield-icon">
+            <Shield size={28} strokeWidth={1.5} />
+          </div>
+          <h1 className="admin-login-title">Admin Portal</h1>
+          <p className="admin-login-subtitle">
+            Secure access for authorized administrators only
+          </p>
+        </div>
 
-                {/* Form */}
-                <form onSubmit={handleSubmit} className="admin-login-form">
-                    {error && (
-                        <div className="admin-error-banner">
-                            <AlertCircle size={16} />
-                            <span>{error}</span>
-                        </div>
-                    )}
-
-                    <div className="admin-field">
-                        <label htmlFor="admin-email" className="admin-label">
-                            Email Address
-                        </label>
-                        <div className="admin-input-wrapper">
-                            <Mail size={16} className="admin-input-icon" />
-                            <input
-                                id="admin-email"
-                                type="email"
-                                autoComplete="email"
-                                required
-                                placeholder="admin@example.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="admin-input"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="admin-field">
-                        <label htmlFor="admin-password" className="admin-label">
-                            Password
-                        </label>
-                        <div className="admin-input-wrapper">
-                            <Lock size={16} className="admin-input-icon" />
-                            <input
-                                id="admin-password"
-                                type={showPassword ? "text" : "password"}
-                                autoComplete="current-password"
-                                required
-                                placeholder="••••••••"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="admin-input admin-input-password"
-                            />
-                            <button
-                                type="button"
-                                className="admin-eye-btn"
-                                onClick={() => setShowPassword(!showPassword)}
-                                tabIndex={-1}
-                            >
-                                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                            </button>
-                        </div>
-                    </div>
-
-                    <button
-                        id="admin-login-btn"
-                        type="submit"
-                        disabled={loading}
-                        className="admin-submit-btn"
-                    >
-                        {loading ? (
-                            <>
-                                <Loader2 size={18} className="admin-spinner" />
-                                Authenticating…
-                            </>
-                        ) : (
-                            <>
-                                <Shield size={18} />
-                                Sign in to Admin Panel
-                            </>
-                        )}
-                    </button>
-                </form>
-
-                <p className="admin-login-footer">
-                    🔒 This area is restricted to authorized personnel only.
-                    <br />
-                    Unauthorized access attempts are logged and monitored.
-                </p>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="admin-login-form">
+          {error && (
+            <div className="admin-error-banner">
+              <AlertCircle size={16} />
+              <span>{error}</span>
             </div>
+          )}
 
-            <style>{`
+          <div className="admin-field">
+            <label htmlFor="admin-email" className="admin-label">
+              Email Address
+            </label>
+            <div className="admin-input-wrapper">
+              <Mail size={16} className="admin-input-icon" />
+              <input
+                id="admin-email"
+                type="email"
+                autoComplete="email"
+                required
+                placeholder="admin@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="admin-input"
+              />
+            </div>
+          </div>
+
+          <div className="admin-field">
+            <label htmlFor="admin-password" className="admin-label">
+              Password
+            </label>
+            <div className="admin-input-wrapper">
+              <Lock size={16} className="admin-input-icon" />
+              <input
+                id="admin-password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                required
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="admin-input admin-input-password"
+              />
+              <button
+                type="button"
+                className="admin-eye-btn"
+                onClick={() => setShowPassword(!showPassword)}
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+          </div>
+
+          <button
+            id="admin-login-btn"
+            type="submit"
+            disabled={loading}
+            className="admin-submit-btn"
+          >
+            {loading ? (
+              <>
+                <Loader2 size={18} className="admin-spinner" />
+                Authenticating…
+              </>
+            ) : (
+              <>
+                <Shield size={18} />
+                Sign in to Admin Panel
+              </>
+            )}
+          </button>
+        </form>
+
+        <p className="admin-login-footer">
+          🔒 This area is restricted to authorized personnel only.
+          <br />
+          Unauthorized access attempts are logged and monitored.
+        </p>
+      </div>
+
+      <style>{`
         .admin-login-bg {
           background: linear-gradient(135deg, #0d0d1a 0%, #0f1629 50%, #0d1117 100%);
           position: relative;
@@ -371,6 +372,6 @@ export default function AdminLoginPage() {
           line-height: 1.7;
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 }

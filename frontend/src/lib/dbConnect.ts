@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.NEXT_PUBLIC_MONGO_URI || 'mongodb://localhost:27017/prolance';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/prolance';
 
 if (!MONGODB_URI) {
     throw new Error('Please define the MONGODB_URI environment variable inside .env.local');

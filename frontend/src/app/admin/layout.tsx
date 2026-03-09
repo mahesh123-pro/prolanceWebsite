@@ -16,6 +16,7 @@ import {
   Menu,
   X,
   ChevronRight,
+  MessageSquare,
 } from "lucide-react";
 
 const navItems = [
@@ -24,6 +25,7 @@ const navItems = [
   { href: "/admin/jobs", label: "Jobs", icon: Briefcase },
   { href: "/admin/resources", label: "Resources", icon: BookOpen },
   { href: "/admin/events", label: "Events", icon: Calendar },
+  { href: "/admin/testimonials", label: "Testimonials", icon: MessageSquare },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
@@ -34,13 +36,14 @@ export default function AdminLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [adminUser, setAdminUser] = useState<any>(null);
+  const [adminUser, setAdminUser] = useState<{ name: string; email: string } | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
 
   // Auth guard — skip when on the login route itself
   useEffect(() => {
     if (pathname === "/admin/login") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setAuthChecked(true);
       return;
     }
@@ -63,6 +66,7 @@ export default function AdminLayout({
 
   // Close sidebar on route change
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSidebarOpen(false);
   }, [pathname]);
 

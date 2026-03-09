@@ -40,7 +40,8 @@ export default function TestimonialForm() {
             });
 
             if (!res.ok) {
-                throw new Error('Failed to submit testimonial');
+                const errorData = await res.json().catch(() => null);
+                throw new Error(errorData?.error || 'Failed to submit testimonial');
             }
 
             setSubmitted(true);

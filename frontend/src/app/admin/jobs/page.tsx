@@ -69,7 +69,8 @@ export default function AdminJobsPage() {
                 );
                 setJobs(res.data.data);
                 setPagination((p) => ({ ...p, ...res.data.pagination }));
-            } catch (err: any) {
+            } catch (error) {
+                const err = error as { response?: { data?: { error?: string; message?: string } } };
                 toast.error(err.response?.data?.error || "Failed to load jobs");
             } finally {
                 setLoading(false);
@@ -80,8 +81,7 @@ export default function AdminJobsPage() {
 
     useEffect(() => {
         fetchJobs(1);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedSearch, jobTypeFilter]);
+    }, [debouncedSearch, jobTypeFilter, fetchJobs]);
 
     const handleDelete = async (id: string, title: string) => {
         if (!confirm(`Delete job "${title}"? This cannot be undone.`)) return;
@@ -93,7 +93,8 @@ export default function AdminJobsPage() {
             });
             toast.success(`Job "${title}" deleted`);
             fetchJobs(pagination.page);
-        } catch (err: any) {
+        } catch (error) {
+            const err = error as { response?: { data?: { error?: string; message?: string } } };
             toast.error(err.response?.data?.error || "Delete failed");
         } finally {
             setActionId(null);

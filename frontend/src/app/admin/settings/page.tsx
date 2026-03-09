@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Shield, Mail, Lock, Info } from "lucide-react";
+import { Shield, Lock, Info } from "lucide-react";
 
 export default function AdminSettingsPage() {
     return (

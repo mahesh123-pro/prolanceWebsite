@@ -1,0 +1,4 @@
+Model collection name: testimonials
+Testimonial.find() count: 1
+Raw specimens in testimonials count: 1
+Collections in DB: testimonials, users, posts, events, jobs

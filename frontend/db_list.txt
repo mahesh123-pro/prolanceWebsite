@@ -1,0 +1,28 @@
+Databases on cluster:
+[
+  {
+    "name": "sample_mflix",
+    "sizeOnDisk": 172290048,
+    "empty": false
+  },
+  {
+    "name": "test",
+    "sizeOnDisk": 208896,
+    "empty": false
+  },
+  {
+    "name": "admin",
+    "sizeOnDisk": 368640,
+    "empty": false
+  },
+  {
+    "name": "local",
+    "sizeOnDisk": 70794649600,
+    "empty": false
+  }
+]
+Collections in sample_mflix: users, embedded_movies, theaters, comments, movies, sessions
+Collections in test: testimonials, users, posts, events, jobs
+  testimonials count in test: 1
+Collections in admin: 
+Collections in local: oplog.rs

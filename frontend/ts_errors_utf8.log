@@ -1,0 +1,9 @@
+﻿diag_db.ts(22,21): error TS18048: 'mongoose.connection.db' is possibly 'undefined'.
+diag_db.ts(26,38): error TS18048: 'mongoose.connection.db' is possibly 'undefined'.
+list_dbs.ts(20,39): error TS18048: 'db.db' is possibly 'undefined'.
+list_dbs.ts(24,37): error TS18048: 'db.db' is possibly 'undefined'.
+read_db.ts(9,31): error TS18048: 'db' is possibly 'undefined'.
+read_db.ts(13,33): error TS18048: 'db' is possibly 'undefined'.
+read_db.ts(17,33): error TS18048: 'db' is possibly 'undefined'.
+test_model.ts(18,27): error TS18048: 'mongoose.connection.db' is possibly 'undefined'.
+test_model.ts(21,35): error TS18048: 'mongoose.connection.db' is possibly 'undefined'.
