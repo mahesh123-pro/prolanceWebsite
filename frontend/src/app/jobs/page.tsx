@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import api from '@/lib/api';
 import toast from 'react-hot-toast';
+import { Reveal } from "@/components/motion/Reveal";
 
 export default function JobsPage() {
     const [jobs, setJobs] = useState<any[]>([]);
@@ -76,15 +77,16 @@ export default function JobsPage() {
         <div className="bg-muted/30 min-h-screen">
             <div className="container mx-auto px-4 py-12 max-w-7xl">
                 {/* Header Section */}
-                <div className="mb-12 text-center lg:text-left">
+                <Reveal className="mb-12 text-center lg:text-left">
                     <h1 className="text-4xl font-extrabold tracking-tight mb-4">Find your next big opportunity</h1>
                     <p className="text-muted-foreground text-lg">Explore thousands of jobs and internships from top tech companies.</p>
-                </div>
+                </Reveal>
 
                 <div className="grid lg:grid-cols-4 gap-8">
                     {/* Filters Sidebar */}
                     <aside className="lg:col-span-1 space-y-6">
-                        <Card className="rounded-3xl border-none shadow-md overflow-hidden bg-background/60 backdrop-blur-md">
+                        <Reveal className="rounded-3xl">
+                          <Card className="rounded-3xl border-none shadow-md overflow-hidden bg-background/60 backdrop-blur-md">
                             <CardHeader className="pb-4 border-b bg-muted/20">
                                 <div className="flex items-center justify-between">
                                     <CardTitle className="text-lg font-bold">Filters</CardTitle>
@@ -134,19 +136,20 @@ export default function JobsPage() {
                                     </Select>
                                 </div>
                             </CardContent>
-                        </Card>
+                          </Card>
+                        </Reveal>
 
-                        <div className="p-6 rounded-3xl bg-primary text-primary-foreground shadow-xl shadow-primary/20">
+                        <Reveal delay={0.05} className="p-6 rounded-3xl bg-primary text-primary-foreground shadow-xl shadow-primary/20">
                             <h4 className="font-bold mb-2">Get personalized jobs</h4>
                             <p className="text-xs text-primary-foreground/80 mb-4 font-medium leading-relaxed">Let companies find you. Complete your profile to get matched with the best roles.</p>
                             <Button variant="secondary" className="w-full rounded-xl font-bold" size="sm">Complete Profile</Button>
-                        </div>
+                        </Reveal>
                     </aside>
 
                     {/* Main Job List */}
                     <div className="lg:col-span-3 space-y-6">
                         {/* Search Bar */}
-                        <div className="flex flex-col sm:flex-row gap-3">
+                        <Reveal className="flex flex-col sm:flex-row gap-3">
                             <div className="relative flex-1 group">
                                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
                                 <Input
@@ -159,7 +162,7 @@ export default function JobsPage() {
                             <Button className="h-12 rounded-2xl px-8 shadow-lg shadow-primary/20 font-bold transition-transform hover:scale-[1.02]">
                                 Search Jobs
                             </Button>
-                        </div>
+                        </Reveal>
 
                         {loading ? (
                             <div className="flex items-center justify-center py-24">
@@ -167,50 +170,52 @@ export default function JobsPage() {
                             </div>
                         ) : (
                             <div className="grid gap-6">
-                                {jobs.map((job: any) => (
-                                    <Card key={job._id} className="group overflow-hidden rounded-[2rem] border-none shadow-sm hover:shadow-xl transition-all duration-300 bg-background/70 backdrop-blur-sm">
-                                        <CardContent className="p-8">
-                                            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                                                <div className="flex gap-6 items-start">
-                                                    <div className="h-16 w-16 rounded-[1.25rem] bg-muted/50 flex items-center justify-center flex-shrink-0 animate-pulse-subtle group-hover:bg-primary/10 transition-colors">
-                                                        <Briefcase className="h-8 w-8 text-primary/40 group-hover:text-primary transition-colors" />
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="text-2xl font-bold group-hover:text-primary transition-colors mb-1">{job.title}</h3>
-                                                        <p className="font-medium text-muted-foreground mb-3">{job.company}</p>
-                                                        <div className="flex flex-wrap gap-4 text-sm font-medium">
-                                                            <div className="flex items-center gap-1.5 text-muted-foreground/80 bg-muted/40 px-3 py-1 rounded-full">
-                                                                <MapPin className="h-3.5 w-3.5" />
-                                                                {job.location}
-                                                            </div>
-                                                            <div className="flex items-center gap-1.5 text-muted-foreground/80 bg-muted/40 px-3 py-1 rounded-full">
-                                                                <DollarSign className="h-3.5 w-3.5" />
-                                                                {job.salary || 'Competitive'}
+                                {jobs.map((job: any, idx: number) => (
+                                    <Reveal key={job._id} delay={Math.min(idx * 0.04, 0.2)}>
+                                        <Card className="group overflow-hidden rounded-[2rem] border-none shadow-sm hover:shadow-xl transition-all duration-300 bg-background/70 backdrop-blur-sm">
+                                            <CardContent className="p-8">
+                                                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                                                    <div className="flex gap-6 items-start">
+                                                        <div className="h-16 w-16 rounded-[1.25rem] bg-muted/50 flex items-center justify-center flex-shrink-0 animate-pulse-subtle group-hover:bg-primary/10 transition-colors">
+                                                            <Briefcase className="h-8 w-8 text-primary/40 group-hover:text-primary transition-colors" />
+                                                        </div>
+                                                        <div>
+                                                            <h3 className="text-2xl font-bold group-hover:text-primary transition-colors mb-1">{job.title}</h3>
+                                                            <p className="font-medium text-muted-foreground mb-3">{job.company}</p>
+                                                            <div className="flex flex-wrap gap-4 text-sm font-medium">
+                                                                <div className="flex items-center gap-1.5 text-muted-foreground/80 bg-muted/40 px-3 py-1 rounded-full">
+                                                                    <MapPin className="h-3.5 w-3.5" />
+                                                                    {job.location}
+                                                                </div>
+                                                                <div className="flex items-center gap-1.5 text-muted-foreground/80 bg-muted/40 px-3 py-1 rounded-full">
+                                                                    <DollarSign className="h-3.5 w-3.5" />
+                                                                    {job.salary || 'Competitive'}
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div className="flex items-center gap-3 w-full md:w-auto">
+                                                        <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl shrink-0 group-hover:border-primary/30 group-hover:text-primary transition-all">
+                                                            <BookmarkPlus className="h-5 w-5" />
+                                                        </Button>
+                                                        <Button className="flex-1 md:flex-none h-12 px-8 rounded-2xl shadow-lg shadow-primary/10 font-bold transition-transform group-hover:scale-[1.05]">
+                                                            Apply Now <ArrowRight className="ml-2 h-4 w-4" />
+                                                        </Button>
+                                                    </div>
                                                 </div>
-                                                <div className="flex items-center gap-3 w-full md:w-auto">
-                                                    <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl shrink-0 group-hover:border-primary/30 group-hover:text-primary transition-all">
-                                                        <BookmarkPlus className="h-5 w-5" />
-                                                    </Button>
-                                                    <Button className="flex-1 md:flex-none h-12 px-8 rounded-2xl shadow-lg shadow-primary/10 font-bold transition-transform group-hover:scale-[1.05]">
-                                                        Apply Now <ArrowRight className="ml-2 h-4 w-4" />
-                                                    </Button>
-                                                </div>
-                                            </div>
 
-                                            <div className="mt-8 pt-8 border-t border-muted/50">
-                                                <div className="flex flex-wrap gap-2">
-                                                    {job.skillsRequired?.map((skill: string) => (
-                                                        <Badge key={skill} variant="secondary" className="px-4 py-1.5 rounded-xl text-xs font-bold tracking-tight bg-muted/30 group-hover:bg-primary/5 group-hover:text-primary transition-colors border-none uppercase">
-                                                            {skill}
-                                                        </Badge>
-                                                    ))}
+                                                <div className="mt-8 pt-8 border-t border-muted/50">
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {job.skillsRequired?.map((skill: string) => (
+                                                            <Badge key={skill} variant="secondary" className="px-4 py-1.5 rounded-xl text-xs font-bold tracking-tight bg-muted/30 group-hover:bg-primary/5 group-hover:text-primary transition-colors border-none uppercase">
+                                                                {skill}
+                                                            </Badge>
+                                                        ))}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
+                                            </CardContent>
+                                        </Card>
+                                    </Reveal>
                                 ))}
                             </div>
                         )}

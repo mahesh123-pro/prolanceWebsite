@@ -33,25 +33,37 @@ function BarChart({
     valueKey: string;
     color: string;
 }) {
-    const maxVal = Math.max(...data.map((d) => d[valueKey]), 1);
+    const maxVal = Math.max(
+        ...data.map((d) => {
+            const n = Number(d[valueKey]);
+            return Number.isFinite(n) ? n : 0;
+        }),
+        1
+    );
     return (
         <div className="chart-container">
             <div className="chart-bars">
                 {data.map((item, i) => (
+                    (() => {
+                        const v = Number(item[valueKey]);
+                        const value = Number.isFinite(v) ? v : 0;
+                        return (
                     <div key={i} className="chart-bar-group">
                         <div className="chart-bar-wrapper">
                             <div
                                 className="chart-bar"
                                 style={{
-                                    height: `${(item[valueKey] / maxVal) * 100}%`,
+                                    height: `${(value / maxVal) * 100}%`,
                                     background: color,
                                 }}
                             >
-                                <span className="chart-bar-tooltip">{item[valueKey]}</span>
+                                <span className="chart-bar-tooltip">{value}</span>
                             </div>
                         </div>
                         <span className="chart-bar-label">{item.month}</span>
                     </div>
+                        );
+                    })()
                 ))}
             </div>
         </div>

@@ -8,6 +8,8 @@ import { Toaster } from "react-hot-toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { Footer } from "@/components/layout/Footer";
+import { PageTransition } from "@/components/motion/PageTransition";
+import Background3D from "@/components/three/Background3D";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,21 +26,28 @@ export const metadata: Metadata = {
   description: "A professional networking and career development platform where students, professionals, and recruiters can connect, learn, find opportunities, collaborate, and grow careers.",
 };
 
+import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="scroll-smooth">
+    <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-background text-foreground`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AuthProvider>
             <TooltipProvider>
-              <Navbar />
-              <main className="flex-1 w-full flex flex-col">{children}</main>
-              <Footer />
-              <Toaster position="bottom-right" />
+              <SmoothScrollProvider>
+                <Background3D />
+                <Navbar />
+                <main className="flex-1 w-full flex flex-col relative z-10">
+                  <PageTransition>{children}</PageTransition>
+                </main>
+                <Footer />
+                <Toaster position="bottom-right" />
+              </SmoothScrollProvider>
             </TooltipProvider>
           </AuthProvider>
         </ThemeProvider>

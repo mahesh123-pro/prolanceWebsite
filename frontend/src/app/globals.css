@@ -121,10 +121,32 @@
     @apply border-border outline-ring/50;
   }
   html {
-    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Lenis recommended styles */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .lenis.lenis-scrolling iframe {
+    pointer-events: none;
   }
   
   /* Dark mode text visibility fixes */
@@ -2401,6 +2423,31 @@
 }
 
 @layer utilities {
+  .bg-3d {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .bg-3d__canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 1;
+  }
+
+  .bg-3d__vignette {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(1200px 800px at 20% 20%, hsl(var(--primary) / 0.10), transparent 55%),
+      radial-gradient(1000px 700px at 80% 70%, hsl(var(--primary) / 0.08), transparent 60%),
+      radial-gradient(900px 600px at 50% 100%, hsl(var(--foreground) / 0.06), transparent 60%),
+      linear-gradient(to bottom, hsl(var(--background) / 0.15), hsl(var(--background) / 0.55));
+    mix-blend-mode: normal;
+  }
+
   .animate-gradient {
     background-size: 200% 200%;
     animation: gradient 8s ease infinite;
