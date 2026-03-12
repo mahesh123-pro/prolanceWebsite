@@ -2,26 +2,79 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Briefcase, Calendar, MessageSquare, BookOpen, Star, Quote } from "lucide-react";
+import { ArrowRight, Briefcase, Calendar, MessageSquare, BookOpen, Star, Quote, Sparkles, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 
-// Fade In Component
+// Advanced Fade In Component with 3D effects
 const FadeIn = ({ children, delay = 0, direction = "up", className = "" }: { children: React.ReactNode, delay?: number, direction?: "up" | "down" | "left" | "right", className?: string }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const yOffset = direction === "up" ? 30 : direction === "down" ? -30 : 0;
-  const xOffset = direction === "left" ? 30 : direction === "right" ? -30 : 0;
+  const yOffset = direction === "up" ? 60 : direction === "down" ? -60 : 0;
+  const xOffset = direction === "left" ? 60 : direction === "right" ? -60 : 0;
+  const rotate = direction === "left" ? 15 : direction === "right" ? -15 : 0;
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: yOffset, x: xOffset }}
-      animate={isInView ? { opacity: 1, y: 0, x: 0 } : { opacity: 0, y: yOffset, x: xOffset }}
-      transition={{ duration: 0.7, delay, ease: "easeOut" }}
+      initial={{ opacity: 0, y: yOffset, x: xOffset, rotate: rotate * 0.1 }}
+      animate={isInView ? { opacity: 1, y: 0, x: 0, rotate: 0 } : { opacity: 0, y: yOffset, x: xOffset, rotate: rotate * 0.1 }}
+      transition={{ duration: 1.2, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// Floating Animation Component
+const FloatingElement = ({ children, delay = 0, duration = 6 }: { children: React.ReactNode, delay?: number, duration?: number }) => {
+  return (
+    <motion.div
+      animate={{
+        y: [0, -10, 0],
+        rotate: [0, 1, 0],
+      }}
+      transition={{
+        duration,
+        delay,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// Magnetic Button Component
+const MagneticButton = ({ children, className = "", ...props }: any) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    setPosition({ x: x * 0.15, y: y * 0.15 });
+  };
+
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      {...props}
     >
       {children}
     </motion.div>
@@ -121,66 +174,189 @@ const GlobalNetworkSVG = () => (
 );
 
 export default function Home() {
+  const { scrollY } = useScroll();
+  const heroY = useTransform(scrollY, [0, 800], [0, 100]);
+  const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
+  const heroScale = useTransform(scrollY, [0, 500], [1, 0.9]);
+
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)]">
       {/* Hero Section */}
       <section className="relative flex-1 flex flex-col items-center justify-center overflow-hidden py-16 md:py-28 bg-gradient-to-br from-background via-primary/5 to-secondary/20">
-        <div className="absolute inset-0 bg-grid-primary/[0.03] bg-[size:40px_40px] pointer-events-none" />
-        <div className="absolute inset-0 flex items-center justify-center bg-background/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] pointer-events-none" />
+        {/* Animated Background Particles */}
+        <motion.div 
+          className="absolute inset-0 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2 }}
+        >
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-primary rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -60, 0],
+                opacity: [0, 1, 0],
+                scale: [0, 1, 0],
+              }}
+              transition={{
+                duration: 6 + Math.random() * 3,
+                repeat: Infinity,
+                delay: Math.random() * 3,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </motion.div>
 
-        <div className="container relative z-10 px-4 md:px-6 mx-auto grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+        <div className="absolute inset-0 bg-grid-primary/[0.03] bg-[size:40px_40px] pointer-events-none" />
+        <motion.div 
+          className="absolute inset-0 flex items-center justify-center bg-background/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] pointer-events-none"
+          style={{ y: heroY }}
+        />
+
+        <motion.div 
+          className="container relative z-10 px-4 md:px-6 mx-auto grid lg:grid-cols-2 gap-12 lg:gap-8 items-center"
+          style={{ y: heroY, opacity: heroOpacity, scale: heroScale }}
+        >
           <div className="text-center lg:text-left flex flex-col items-center lg:items-start z-10">
             <FadeIn delay={0.1}>
-              <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-medium mb-8 text-primary backdrop-blur-sm shadow-sm hover:shadow-primary/20 transition-all hover:scale-105 cursor-default">
-                <span className="flex h-2 w-2 rounded-full bg-primary mr-2.5 animate-pulse shadow-[0_0_8px_rgba(var(--primary),0.8)]"></span>
-                Welcome to the future of networking
-              </div>
+              <motion.div 
+                className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-medium mb-8 text-primary backdrop-blur-sm shadow-sm hover:shadow-primary/20 transition-all hover:scale-105 cursor-default"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <motion.span 
+                  className="flex h-2 w-2 rounded-full bg-primary mr-2.5 animate-pulse shadow-[0_0_8px_rgba(var(--primary),0.8)]"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                ></motion.span>
+                <motion.div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4" />
+                  Welcome to the future of networking
+                </motion.div>
+              </motion.div>
             </FadeIn>
 
             <FadeIn delay={0.2}>
-              <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-foreground/80 leading-tight">
-                Accelerate Your<br />
-                <span className="text-foreground">Tech Career.</span>
-              </h1>
+              <motion.h1 
+                className="text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-foreground/80 leading-tight"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+              >
+                <motion.span className="block">Accelerate Your</motion.span>
+                <motion.span 
+                  className="block text-foreground"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
+                  Tech Career.
+                </motion.span>
+              </motion.h1>
             </FadeIn>
 
             <FadeIn delay={0.3}>
-              <p className="max-w-[42rem] lg:mx-0 text-lg sm:text-xl text-muted-foreground mb-10 leading-relaxed font-medium">
+              <motion.p 
+                className="max-w-[42rem] lg:mx-0 text-lg sm:text-xl text-muted-foreground mb-10 leading-relaxed font-medium"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
                 The exclusive networking hub bridging the gap between student developers, early-career tech professionals, and innovative startups hiring top talent.
-              </p>
+              </motion.p>
             </FadeIn>
 
             <FadeIn delay={0.4} className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <Button size="lg" className="h-14 px-8 text-base shadow-lg shadow-primary/25 transition-all hover:scale-105 hover:shadow-primary/40 rounded-full w-full sm:w-auto overflow-hidden relative group" asChild>
-                <Link href="/signup">
-                  <span className="relative z-10 flex items-center">Join the Network <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" /></span>
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="h-14 px-8 text-base transition-all hover:scale-105 hover:bg-primary/5 hover:text-primary hover:border-primary/50 rounded-full w-full sm:w-auto shadow-sm" asChild>
-                <Link href="/jobs">
-                  Explore Tech Jobs
-                </Link>
-              </Button>
+              <MagneticButton>
+                <Button 
+                  size="lg" 
+                  className="h-14 px-8 text-base shadow-lg shadow-primary/25 transition-all hover:scale-105 hover:shadow-primary/40 rounded-full w-full sm:w-auto overflow-hidden relative group" 
+                  asChild
+                >
+                  <Link href="/signup">
+                    <motion.div className="relative z-10 flex items-center" whileHover={{ x: 5 }}>
+                      <Zap className="mr-2 h-5 w-5" />
+                      Join the Network 
+                      <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                    </motion.div>
+                    <motion.div 
+                      className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+                      initial={{ y: "100%" }}
+                      whileHover={{ y: 0 }}
+                    />
+                  </Link>
+                </Button>
+              </MagneticButton>
+              <MagneticButton>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="h-14 px-8 text-base transition-all hover:scale-105 hover:bg-primary/5 hover:text-primary hover:border-primary/50 rounded-full w-full sm:w-auto shadow-sm" 
+                  asChild
+                >
+                  <Link href="/jobs">
+                    Explore Tech Jobs
+                  </Link>
+                </Button>
+              </MagneticButton>
             </FadeIn>
 
             <FadeIn delay={0.6} className="mt-12 flex items-center gap-6 justify-center lg:justify-start opacity-80">
-              <div className="flex -space-x-3">
-                {[11, 12, 13, 14].map((i) => (
-                  <div key={i} className="h-10 w-10 rounded-full border-2 border-background bg-secondary flex items-center justify-center overflow-hidden">
+              <motion.div 
+                className="flex -space-x-3"
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                {[11, 12, 13, 14].map((i, index) => (
+                  <motion.div 
+                    key={i} 
+                    className="h-10 w-10 rounded-full border-2 border-background bg-secondary flex items-center justify-center overflow-hidden"
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
+                    whileHover={{ scale: 1.1, zIndex: 10 }}
+                  >
                     <img src={`https://i.pravatar.cc/100?img=${i}`} alt={`Beta User ${i}`} className="object-cover h-full w-full" />
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
-              <div className="text-sm font-medium">
+              </motion.div>
+              <motion.div 
+                className="text-sm font-medium"
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+              >
                 <span className="text-primary font-bold">Trusted by</span> early beta users
-              </div>
+              </motion.div>
             </FadeIn>
           </div>
 
           <FadeIn delay={0.3} direction="left" className="relative mx-auto w-full max-w-[500px] lg:max-w-none aspect-[4/3] lg:aspect-square flex items-center justify-center">
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/30 rounded-full blur-[80px] -z-10 animate-pulse" style={{ animationDuration: '4s' }}></div>
-            <div className="relative w-full h-[90%] rounded-3xl overflow-hidden border border-white/10 bg-muted/10 shadow-2xl shadow-primary/10 group transition-all duration-500 hover:shadow-primary/30">
+            <FloatingElement delay={0.5} duration={4}>
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/30 rounded-full blur-[80px] -z-10"
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.5, 0.8, 0.5],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            </FloatingElement>
+            <motion.div 
+              className="relative w-full h-[90%] rounded-3xl overflow-hidden border border-white/10 bg-muted/10 shadow-2xl shadow-primary/10 group transition-all duration-500 hover:shadow-primary/30"
+              whileHover={{ scale: 1.02, rotateY: 5 }}
+              style={{ perspective: "1000px" }}
+            >
               <Image
                 src="/images/hero.png"
                 alt="Professionals Networking"
@@ -188,28 +364,52 @@ export default function Home() {
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent"></div>
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 0.5 }}
+              />
 
               {/* Floating interactive elements */}
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.8 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
                 className="absolute bottom-6 left-6 right-6 bg-background/80 backdrop-blur-md border border-border/50 rounded-2xl p-4 shadow-xl translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+                whileHover={{ scale: 1.05 }}
               >
                 <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                  <motion.div 
+                    className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center text-primary"
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                  >
                     <Star className="h-6 w-6 fill-primary" />
-                  </div>
+                  </motion.div>
                   <div>
-                    <p className="font-bold text-foreground">Top Rated Developer Platform</p>
-                    <p className="text-sm text-muted-foreground">Join the elite network</p>
+                    <motion.p 
+                      className="font-bold text-foreground"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 1 }}
+                    >
+                      Top Rated Developer Platform
+                    </motion.p>
+                    <motion.p 
+                      className="text-sm text-muted-foreground"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 1.2 }}
+                    >
+                      Join the elite network
+                    </motion.p>
                   </div>
                 </div>
               </motion.div>
-            </div>
+            </motion.div>
           </FadeIn>
-        </div>
+        </motion.div>
       </section>
 
       {/* Features Section */}
@@ -225,8 +425,27 @@ export default function Home() {
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {/* Feature 1 */}
             <FadeIn delay={0.1}>
-              <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 flex flex-col h-full cursor-pointer">
-                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <motion.div 
+                className="group relative overflow-hidden rounded-3xl border border-border/50 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 flex flex-col h-full cursor-pointer"
+                whileHover={{ 
+                  scale: 1.02,
+                  rotateX: 5,
+                  rotateY: 5,
+                  transition: { duration: 0.3 }
+                }}
+                style={{ perspective: "1000px" }}
+              >
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                  animate={{
+                    background: [
+                      "linear-gradient(to bottom, hsl(var(--primary)/5), transparent)",
+                      "linear-gradient(to bottom, hsl(var(--primary)/10), transparent)",
+                      "linear-gradient(to bottom, hsl(var(--primary)/5), transparent)"
+                    ]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                />
                 <div className="relative h-[220px] w-full overflow-hidden border-b border-border/50">
                   <Image
                     src="/images/jobs.png"
@@ -234,22 +453,54 @@ export default function Home() {
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <motion.div 
+                    className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity"
+                    animate={{ opacity: [0, 0.5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
                 </div>
                 <div className="p-8 flex-1 flex flex-col relative z-10">
-                  <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-6 group-hover:scale-110 shadow-sm">
+                  <motion.div 
+                    className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-6 group-hover:scale-110 shadow-sm"
+                    whileHover={{ rotate: 360, scale: 1.2 }}
+                    transition={{ duration: 0.6 }}
+                  >
                     <Briefcase className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors" />
-                  </div>
-                  <h3 className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors">Tech Opportunities</h3>
+                  </motion.div>
+                  <motion.h3 
+                    className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors"
+                    whileHover={{ x: 5 }}
+                  >
+                    Tech Opportunities
+                  </motion.h3>
                   <p className="text-muted-foreground flex-1 leading-relaxed">Discover internships, full-time engineering roles, and exclusive freelance gigs posted directly by innovative companies.</p>
                 </div>
-              </div>
+              </motion.div>
             </FadeIn>
 
             {/* Feature 2 */}
             <FadeIn delay={0.2}>
-              <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 flex flex-col h-full cursor-pointer">
-                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <motion.div 
+                className="group relative overflow-hidden rounded-3xl border border-border/50 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 flex flex-col h-full cursor-pointer"
+                whileHover={{ 
+                  scale: 1.02,
+                  rotateX: -5,
+                  rotateY: 5,
+                  transition: { duration: 0.3 }
+                }}
+                style={{ perspective: "1000px" }}
+              >
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                  animate={{
+                    background: [
+                      "linear-gradient(to bottom, hsl(var(--primary)/5), transparent)",
+                      "linear-gradient(to bottom, hsl(var(--primary)/10), transparent)",
+                      "linear-gradient(to bottom, hsl(var(--primary)/5), transparent)"
+                    ]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
+                />
                 <div className="relative h-[220px] w-full overflow-hidden border-b border-border/50">
                   <Image
                     src="/images/events.png"
@@ -257,22 +508,54 @@ export default function Home() {
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <motion.div 
+                    className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity"
+                    animate={{ opacity: [0, 0.5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                  />
                 </div>
                 <div className="p-8 flex-1 flex flex-col relative z-10">
-                  <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:-rotate-6 group-hover:scale-110 shadow-sm">
+                  <motion.div 
+                    className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:-rotate-6 group-hover:scale-110 shadow-sm"
+                    whileHover={{ rotate: -360, scale: 1.2 }}
+                    transition={{ duration: 0.6 }}
+                  >
                     <Calendar className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors" />
-                  </div>
-                  <h3 className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors">Developer Events</h3>
+                  </motion.div>
+                  <motion.h3 
+                    className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors"
+                    whileHover={{ x: 5 }}
+                  >
+                    Developer Events
+                  </motion.h3>
                   <p className="text-muted-foreground flex-1 leading-relaxed">Filter and RSVP to hackathons, UI/UX workshops, and local meetups to expand your network in real time.</p>
                 </div>
-              </div>
+              </motion.div>
             </FadeIn>
 
             {/* Feature 3 */}
             <FadeIn delay={0.3}>
-              <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 flex flex-col h-full cursor-pointer">
-                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <motion.div 
+                className="group relative overflow-hidden rounded-3xl border border-border/50 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 flex flex-col h-full cursor-pointer"
+                whileHover={{ 
+                  scale: 1.02,
+                  rotateX: 5,
+                  rotateY: -5,
+                  transition: { duration: 0.3 }
+                }}
+                style={{ perspective: "1000px" }}
+              >
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                  animate={{
+                    background: [
+                      "linear-gradient(to bottom, hsl(var(--primary)/5), transparent)",
+                      "linear-gradient(to bottom, hsl(var(--primary)/10), transparent)",
+                      "linear-gradient(to bottom, hsl(var(--primary)/5), transparent)"
+                    ]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+                />
                 <div className="relative h-[220px] w-full overflow-hidden border-b border-border/50">
                   <Image
                     src="/images/community.png"
@@ -280,22 +563,54 @@ export default function Home() {
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <motion.div 
+                    className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity"
+                    animate={{ opacity: [0, 0.5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                  />
                 </div>
                 <div className="p-8 flex-1 flex flex-col relative z-10">
-                  <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-6 group-hover:scale-110 shadow-sm">
+                  <motion.div 
+                    className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-6 group-hover:scale-110 shadow-sm"
+                    whileHover={{ rotate: 360, scale: 1.2 }}
+                    transition={{ duration: 0.6 }}
+                  >
                     <MessageSquare className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors" />
-                  </div>
-                  <h3 className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors">Vibrant Community</h3>
+                  </motion.div>
+                  <motion.h3 
+                    className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors"
+                    whileHover={{ x: 5 }}
+                  >
+                    Vibrant Community
+                  </motion.h3>
                   <p className="text-muted-foreground flex-1 leading-relaxed">Engage in technical discussions, ask architectural questions, and share project challenges with peers and senior mentors.</p>
                 </div>
-              </div>
+              </motion.div>
             </FadeIn>
 
             {/* Feature 4 */}
             <FadeIn delay={0.4}>
-              <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 flex flex-col h-full cursor-pointer">
-                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <motion.div 
+                className="group relative overflow-hidden rounded-3xl border border-border/50 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 flex flex-col h-full cursor-pointer"
+                whileHover={{ 
+                  scale: 1.02,
+                  rotateX: -5,
+                  rotateY: -5,
+                  transition: { duration: 0.3 }
+                }}
+                style={{ perspective: "1000px" }}
+              >
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                  animate={{
+                    background: [
+                      "linear-gradient(to bottom, hsl(var(--primary)/5), transparent)",
+                      "linear-gradient(to bottom, hsl(var(--primary)/10), transparent)",
+                      "linear-gradient(to bottom, hsl(var(--primary)/5), transparent)"
+                    ]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
+                />
                 <div className="relative h-[220px] w-full overflow-hidden border-b border-border/50">
                   <Image
                     src="/images/resources.png"
@@ -303,16 +618,29 @@ export default function Home() {
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <motion.div 
+                    className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity"
+                    animate={{ opacity: [0, 0.5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 1.5 }}
+                  />
                 </div>
                 <div className="p-8 flex-1 flex flex-col relative z-10">
-                  <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:-rotate-6 group-hover:scale-110 shadow-sm">
+                  <motion.div 
+                    className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:-rotate-6 group-hover:scale-110 shadow-sm"
+                    whileHover={{ rotate: -360, scale: 1.2 }}
+                    transition={{ duration: 0.6 }}
+                  >
                     <BookOpen className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors" />
-                  </div>
-                  <h3 className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors">Curated Resources</h3>
+                  </motion.div>
+                  <motion.h3 
+                    className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors"
+                    whileHover={{ x: 5 }}
+                  >
+                    Curated Resources
+                  </motion.h3>
                   <p className="text-muted-foreground flex-1 leading-relaxed">Access high-quality learning materials, developer roadmaps, and interview prep tutorials to stay consistently ahead.</p>
                 </div>
-              </div>
+              </motion.div>
             </FadeIn>
           </div>
         </div>
@@ -349,53 +677,219 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* Testimonial 1 */}
             <FadeIn delay={0.1}>
-              <div className="bg-muted/30 border border-border/50 rounded-3xl p-8 relative flex flex-col h-full hover:shadow-lg transition-all">
-                <Quote className="absolute top-6 right-8 h-12 w-12 text-primary/10 rotate-180" />
-                <p className="text-lg leading-relaxed text-foreground/80 mb-6 flex-1">
+              <motion.div 
+                className="bg-muted/30 border border-border/50 rounded-3xl p-8 relative flex flex-col h-full hover:shadow-lg transition-all cursor-pointer"
+                whileHover={{ 
+                  scale: 1.02,
+                  y: -5,
+                  transition: { duration: 0.3 }
+                }}
+              >
+                <motion.div 
+                  className="absolute top-6 right-8 h-12 w-12 text-primary/10 rotate-180"
+                  animate={{ 
+                    rotate: [180, 185, 180],
+                    scale: [1, 1.05, 1]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                >
+                  <Quote className="h-full w-full" />
+                </motion.div>
+                <motion.p 
+                  className="text-lg leading-relaxed text-foreground/80 mb-6 flex-1"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
                   "Prolance totally changed how I network. I found a startup looking for a frontend developer and secured my first serious internship within a week of creating my profile."
-                </p>
-                <div className="flex items-center gap-4">
-                  <img src="https://i.pravatar.cc/100?img=33" alt="Sarah J" className="h-12 w-12 rounded-full ring-2 ring-primary/20 object-cover" />
+                </motion.p>
+                <motion.div 
+                  className="flex items-center gap-4"
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <motion.div 
+                    className="relative"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <img 
+                      src="https://i.pravatar.cc/100?img=33" 
+                      alt="Sarah J" 
+                      className="h-12 w-12 rounded-full ring-2 ring-primary/20 object-cover" 
+                    />
+                    <motion.div 
+                      className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-background"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  </motion.div>
                   <div>
-                    <h4 className="font-bold text-foreground">Sarah J.</h4>
-                    <p className="text-sm text-primary">CS Student</p>
+                    <motion.h4 
+                      className="font-bold text-foreground"
+                      whileHover={{ color: "hsl(var(--primary))" }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      Sarah J.
+                    </motion.h4>
+                    <motion.p 
+                      className="text-sm text-primary"
+                      animate={{ opacity: [0.7, 1, 0.7] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    >
+                      CS Student
+                    </motion.p>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             </FadeIn>
 
-            {/* Testimonial 2 */}
+            {/* Testimonial 2 - Featured */}
             <FadeIn delay={0.2}>
-              <div className="bg-primary border border-primary-foreground/10 rounded-3xl p-8 relative flex flex-col h-full shadow-xl shadow-primary/20 text-primary-foreground transform md:-translate-y-4">
-                <Quote className="absolute top-6 right-8 h-12 w-12 text-primary-foreground/20 rotate-180" />
-                <p className="text-lg leading-relaxed mb-6 flex-1">
+              <motion.div 
+                className="bg-primary border border-primary-foreground/10 rounded-3xl p-8 relative flex flex-col h-full shadow-xl shadow-primary/20 text-primary-foreground transform md:-translate-y-4 cursor-pointer"
+                whileHover={{ 
+                  scale: 1.03,
+                  y: -8,
+                  transition: { duration: 0.3 }
+                }}
+              >
+                <motion.div 
+                  className="absolute top-6 right-8 h-12 w-12 text-primary-foreground/20 rotate-180"
+                  animate={{ 
+                    rotate: [180, 175, 180],
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{ duration: 2.5, repeat: Infinity }}
+                >
+                  <Quote className="h-full w-full" />
+                </motion.div>
+                <motion.div 
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center"
+                  animate={{ 
+                    rotate: [0, 360],
+                    scale: [1, 1.2, 1]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                >
+                  <Star className="h-3 w-3 text-primary fill-primary" />
+                </motion.div>
+                <motion.p 
+                  className="text-lg leading-relaxed mb-6 flex-1"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                >
                   "As a technical recruiter, sifting through generalized job boards is exhausting. Prolance provides a concentrated pool of highly motivated and skilled tech talent."
-                </p>
-                <div className="flex items-center gap-4">
-                  <img src="https://i.pravatar.cc/100?img=53" alt="Mark T" className="h-12 w-12 rounded-full ring-2 ring-primary-foreground/50 object-cover" />
+                </motion.p>
+                <motion.div 
+                  className="flex items-center gap-4"
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <motion.div 
+                    className="relative"
+                    whileHover={{ scale: 1.1, rotate: -5 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <img 
+                      src="https://i.pravatar.cc/100?img=53" 
+                      alt="Mark T" 
+                      className="h-12 w-12 rounded-full ring-2 ring-primary-foreground/50 object-cover" 
+                    />
+                    <motion.div 
+                      className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-primary"
+                      animate={{ scale: [1, 1.3, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                    />
+                  </motion.div>
                   <div>
-                    <h4 className="font-bold">Mark T.</h4>
-                    <p className="text-sm opacity-80">Technical Recruiter</p>
+                    <motion.h4 
+                      className="font-bold"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      Mark T.
+                    </motion.h4>
+                    <motion.p 
+                      className="text-sm opacity-80"
+                      animate={{ opacity: [0.6, 1, 0.6] }}
+                      transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+                    >
+                      Technical Recruiter
+                    </motion.p>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             </FadeIn>
 
             {/* Testimonial 3 */}
             <FadeIn delay={0.3}>
-              <div className="bg-muted/30 border border-border/50 rounded-3xl p-8 relative flex flex-col h-full hover:shadow-lg transition-all">
-                <Quote className="absolute top-6 right-8 h-12 w-12 text-primary/10 rotate-180" />
-                <p className="text-lg leading-relaxed text-foreground/80 mb-6 flex-1">
+              <motion.div 
+                className="bg-muted/30 border border-border/50 rounded-3xl p-8 relative flex flex-col h-full hover:shadow-lg transition-all cursor-pointer"
+                whileHover={{ 
+                  scale: 1.02,
+                  y: -5,
+                  transition: { duration: 0.3 }
+                }}
+              >
+                <motion.div 
+                  className="absolute top-6 right-8 h-12 w-12 text-primary/10 rotate-180"
+                  animate={{ 
+                    rotate: [180, 175, 180],
+                    scale: [1, 1.05, 1]
+                  }}
+                  transition={{ duration: 3.5, repeat: Infinity }}
+                >
+                  <Quote className="h-full w-full" />
+                </motion.div>
+                <motion.p 
+                  className="text-lg leading-relaxed text-foreground/80 mb-6 flex-1"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
                   "The community aspect is incredible. Whenever I get stuck on a complex bug, I can bounce ideas off senior devs who genuinely want to help out. Highly recommend!"
-                </p>
-                <div className="flex items-center gap-4">
-                  <img src="https://i.pravatar.cc/100?img=12" alt="David L" className="h-12 w-12 rounded-full ring-2 ring-primary/20 object-cover" />
+                </motion.p>
+                <motion.div 
+                  className="flex items-center gap-4"
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <motion.div 
+                    className="relative"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <img 
+                      src="https://i.pravatar.cc/100?img=12" 
+                      alt="David L" 
+                      className="h-12 w-12 rounded-full ring-2 ring-primary/20 object-cover" 
+                    />
+                    <motion.div 
+                      className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-background"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                    />
+                  </motion.div>
                   <div>
-                    <h4 className="font-bold text-foreground">David L.</h4>
-                    <p className="text-sm text-primary">Junior Full-Stack Dev</p>
+                    <motion.h4 
+                      className="font-bold text-foreground"
+                      whileHover={{ color: "hsl(var(--primary))" }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      David L.
+                    </motion.h4>
+                    <motion.p 
+                      className="text-sm text-primary"
+                      animate={{ opacity: [0.7, 1, 0.7] }}
+                      transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
+                    >
+                      Junior Full-Stack Dev
+                    </motion.p>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             </FadeIn>
           </div>
         </div>
@@ -403,17 +897,94 @@ export default function Home() {
 
       {/* Call to action section */}
       <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary/95"></div>
-        <div className="absolute inset-0 bg-[url('/images/hero.png')] opacity-10 mix-blend-overlay bg-cover bg-center"></div>
+        <motion.div 
+          className="absolute inset-0 bg-primary/95"
+          animate={{
+            background: [
+              "linear-gradient(135deg, hsl(var(--primary)/95), hsl(var(--primary)/85))",
+              "linear-gradient(135deg, hsl(var(--primary)/85), hsl(var(--primary)/95))",
+              "linear-gradient(135deg, hsl(var(--primary)/95), hsl(var(--primary)/85))"
+            ]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute inset-0 bg-[url('/images/hero.png')] opacity-10 mix-blend-overlay bg-cover bg-center"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        />
+        
+        {/* Floating particles */}
+        <motion.div className="absolute inset-0 pointer-events-none">
+          {[...Array(15)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 bg-white rounded-full opacity-30"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -50, 0],
+                x: [0, 20, 0],
+                opacity: [0.3, 0.8, 0.3],
+              }}
+              transition={{
+                duration: 4 + Math.random() * 3,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </motion.div>
+
         <div className="container px-4 md:px-6 mx-auto relative z-10 text-center">
           <FadeIn>
-            <h2 className="text-3xl md:text-5xl font-bold text-primary-foreground mb-6">Ready to execute your career roadmap?</h2>
-            <p className="text-primary-foreground/80 text-lg md:text-xl max-w-[40rem] mx-auto mb-10 font-medium">Join ambitious tech professionals building their future exclusively on Prolance.</p>
-            <Button size="lg" variant="secondary" className="h-14 px-10 text-lg font-bold shadow-2xl hover:scale-105 transition-transform rounded-full" asChild>
-              <Link href="/signup">
-                Create Your Free Profile
-              </Link>
-            </Button>
+            <motion.h2 
+              className="text-3xl md:text-5xl font-bold text-primary-foreground mb-6"
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              Ready to execute your career roadmap?
+            </motion.h2>
+            <motion.p 
+              className="text-primary-foreground/80 text-lg md:text-xl max-w-[40rem] mx-auto mb-10 font-medium"
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              Join ambitious tech professionals building their future exclusively on Prolance.
+            </motion.p>
+            <MagneticButton>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  size="lg" 
+                  variant="secondary" 
+                  className="h-14 px-10 text-lg font-bold shadow-2xl hover:scale-105 transition-transform rounded-full relative overflow-hidden group" 
+                  asChild
+                >
+                  <Link href="/signup">
+                    <motion.div 
+                      className="relative z-10 flex items-center gap-2"
+                      whileHover={{ x: 5 }}
+                    >
+                      <Sparkles className="h-5 w-5" />
+                      Create Your Free Profile
+                    </motion.div>
+                    <motion.div 
+                      className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+                      initial={{ y: "100%" }}
+                    />
+                  </Link>
+                </Button>
+              </motion.div>
+            </MagneticButton>
           </FadeIn>
         </div>
       </section>
