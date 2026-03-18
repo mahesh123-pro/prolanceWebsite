@@ -97,6 +97,37 @@ export default function EventsPage() {
                     </div>
                 </Reveal>
 
+                {/* What you get by joining section */}
+                <div className="grid md:grid-cols-3 gap-6 mb-16 px-2">
+                    {[
+                        {
+                            icon: <Users className="h-6 w-6 text-primary" />,
+                            title: "Elite Networking",
+                            desc: "Connect face-to-face with industry leaders and fellow builders. Find your next co-founder or technical mentor instantly."
+                        },
+                        {
+                            icon: <Video className="h-6 w-6 text-primary" />,
+                            title: "Exclusive Workshops",
+                            desc: "Learn new frameworks directly from the creators. Get hands-on code experience you simply won't find in a tutorial."
+                        },
+                        {
+                            icon: <Trophy className="h-6 w-6 text-primary" />,
+                            title: "Hackathon Prizes",
+                            desc: "Skip the generic HR queue. Win cash prizes, free deployment credits, and fast-track interviews by shipping cool projects."
+                        }
+                    ].map((benefit, idx) => (
+                        <Reveal key={idx} delay={idx * 0.1}>
+                            <div className="p-6 rounded-3xl border border-border/50 bg-background/50 backdrop-blur-md hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300">
+                                <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+                                    {benefit.icon}
+                                </div>
+                                <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
+                                <p className="text-muted-foreground font-medium text-sm leading-relaxed">{benefit.desc}</p>
+                            </div>
+                        </Reveal>
+                    ))}
+                </div>
+
                 {/* Filter Section */}
                 <Reveal className="flex flex-col md:flex-row gap-6 mb-12 items-center justify-between">
                     <div className="flex gap-2 p-2 bg-muted/40 rounded-[1.5rem] border overflow-x-auto w-full md:w-auto scrollbar-hide">

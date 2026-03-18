@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Search, MapPin, Briefcase, DollarSign, Filter, BookmarkPlus, Send } from 'lucide-react';
+import { Search, MapPin, Briefcase, DollarSign, Filter, BookmarkPlus, Send, MessageSquare } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import api from '@/lib/api';
@@ -79,7 +79,38 @@ export default function JobsPage() {
                 {/* Header Section */}
                 <Reveal className="mb-12 text-center lg:text-left">
                     <h1 className="text-4xl font-extrabold tracking-tight mb-4">Find your next big opportunity</h1>
-                    <p className="text-muted-foreground text-lg">Explore thousands of jobs and internships from top tech companies.</p>
+                    <p className="text-muted-foreground text-lg mb-12">Explore thousands of jobs and internships from top tech companies.</p>
+
+                    {/* What you get by joining section */}
+                    <div className="grid md:grid-cols-3 gap-6 mb-16 text-left">
+                        {[
+                            {
+                                icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+                                title: "Verified Startups",
+                                desc: "Every company is vetted. No ghosting, no fake jobs. Apply with confidence to teams actively hiring."
+                            },
+                            {
+                                icon: <MessageSquare className="h-6 w-6 text-primary" />,
+                                title: "Direct Founder Chat",
+                                desc: "Skip the generic HR queue. Our platform lets you message technical hiring managers directly."
+                            },
+                            {
+                                icon: <DollarSign className="h-6 w-6 text-primary" />,
+                                title: "Transparent Salaries",
+                                desc: "Upfront compensation and equity details on every single post. Never waste time on low-ball offers."
+                            }
+                        ].map((benefit, idx) => (
+                            <Reveal key={idx} delay={idx * 0.1}>
+                                <div className="p-6 rounded-3xl border border-border/50 bg-background/50 backdrop-blur-md hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300">
+                                    <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+                                        {benefit.icon}
+                                    </div>
+                                    <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
+                                    <p className="text-muted-foreground font-medium text-sm leading-relaxed">{benefit.desc}</p>
+                                </div>
+                            </Reveal>
+                        ))}
+                    </div>
                 </Reveal>
 
                 <div className="grid lg:grid-cols-4 gap-8">

@@ -99,6 +99,37 @@ export default function ResourcesPage() {
                     </p>
                 </Reveal>
 
+                {/* What you get by joining section */}
+                <div className="grid md:grid-cols-3 gap-6 mb-16">
+                    {[
+                        {
+                            icon: <BookOpen className="h-6 w-6 text-primary" />,
+                            title: "Veteran Curated",
+                            desc: "Stop wandering tutorial hell. Every roadmap and guide is strictly vetted by Principal Engineers from top tech companies."
+                        },
+                        {
+                            icon: <Zap className="h-6 w-6 text-primary" />,
+                            title: "Instant Application",
+                            desc: "Learn by shipping. Our resources focus entirely on building real-world projects rather than just reading theoretical docs."
+                        },
+                        {
+                            icon: <Bookmark className="h-6 w-6 text-primary" />,
+                            title: "Forever Access",
+                            desc: "Join once, keep forever. Save and organize your favorite architecture guides, and get free updates when tech stacks evolve."
+                        }
+                    ].map((benefit, idx) => (
+                        <Reveal key={idx} delay={idx * 0.1}>
+                            <div className="p-6 rounded-3xl border border-border/50 bg-background/50 backdrop-blur-md hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300">
+                                <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+                                    {benefit.icon}
+                                </div>
+                                <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
+                                <p className="text-muted-foreground font-medium text-sm leading-relaxed">{benefit.desc}</p>
+                            </div>
+                        </Reveal>
+                    ))}
+                </div>
+
                 {/* Action Bar */}
                 <Reveal className="flex flex-col md:flex-row gap-6 mb-12 items-center justify-between">
                     <div className="flex gap-2 p-1.5 bg-muted/30 rounded-[1.25rem] border overflow-x-auto w-full md:w-auto">

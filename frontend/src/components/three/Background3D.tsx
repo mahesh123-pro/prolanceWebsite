@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import * as THREE from "three";
+import { motion } from "framer-motion";
 
 function getPrefersReducedMotion(): boolean {
   if (typeof window === "undefined") return true;
@@ -196,9 +197,42 @@ export default function Background3D() {
   if (!enabled) return null;
 
   return (
-    <div aria-hidden className="bg-3d">
-      <canvas ref={canvasRef} className="bg-3d__canvas" />
-      <div className="bg-3d__vignette" />
+    <div aria-hidden className="bg-3d fixed inset-0 overflow-hidden pointer-events-none -z-50">
+      <canvas ref={canvasRef} className="bg-3d__canvas absolute inset-0" />
+      <div className="bg-3d__vignette absolute inset-0" />
+      
+      {/* Immersive 3D Images in the background */}
+      <motion.div
+        className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] min-w-[500px] min-h-[500px] opacity-20 mix-blend-screen"
+        animate={{
+          y: [0, 30, 0],
+          x: [0, -20, 0],
+          rotate: [0, 5, 0],
+        }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img
+          src="/images/bg_3d_shape_1.png"
+          alt=""
+          className="w-full h-full object-contain blur-[1px]"
+        />
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-[-10%] right-[-5%] w-[45vw] h-[45vw] min-w-[400px] min-h-[400px] opacity-15 mix-blend-screen"
+        animate={{
+          y: [0, -40, 0],
+          x: [0, 25, 0],
+          rotate: [0, -5, 0],
+        }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+      >
+        <img
+          src="/images/bg_3d_shape_2.png"
+          alt=""
+          className="w-full h-full object-contain blur-[2px]"
+        />
+      </motion.div>
     </div>
   );
 }

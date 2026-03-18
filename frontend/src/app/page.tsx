@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Briefcase, Calendar, MessageSquare, BookOpen, Star, Quote, Sparkles, Zap } from "lucide-react";
+import { ArrowRight, Briefcase, Calendar, MessageSquare, BookOpen, Star, Quote, Sparkles, Zap, Layout, Target, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
@@ -524,7 +524,7 @@ export default function Home() {
             </p>
           </FadeIn>
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {/* Feature 1 */}
             <FadeIn delay={0.1}>
               <motion.div 
@@ -548,6 +548,7 @@ export default function Home() {
                   }}
                   transition={{ duration: 3, repeat: Infinity }}
                 />
+                <Link href="/jobs" className="absolute inset-0 z-20" aria-label="View Tech Opportunities"></Link>
                 <div className="relative h-[220px] w-full overflow-hidden border-b border-border/50">
                   <Image
                     src="/images/jobs.png"
@@ -603,6 +604,7 @@ export default function Home() {
                   }}
                   transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
                 />
+                <Link href="/events" className="absolute inset-0 z-20" aria-label="View Developer Events"></Link>
                 <div className="relative h-[220px] w-full overflow-hidden border-b border-border/50">
                   <Image
                     src="/images/events.png"
@@ -658,6 +660,7 @@ export default function Home() {
                   }}
                   transition={{ duration: 3, repeat: Infinity, delay: 1 }}
                 />
+                <Link href="/community" className="absolute inset-0 z-20" aria-label="View Vibrant Community"></Link>
                 <div className="relative h-[220px] w-full overflow-hidden border-b border-border/50">
                   <Image
                     src="/images/community.png"
@@ -713,6 +716,7 @@ export default function Home() {
                   }}
                   transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
                 />
+                <Link href="/resources" className="absolute inset-0 z-20" aria-label="View Curated Resources"></Link>
                 <div className="relative h-[220px] w-full overflow-hidden border-b border-border/50">
                   <Image
                     src="/images/resources.png"
@@ -741,6 +745,98 @@ export default function Home() {
                     Curated Resources
                   </motion.h3>
                   <p className="text-muted-foreground flex-1 leading-relaxed">Access high-quality learning materials, developer roadmaps, and interview prep tutorials to stay consistently ahead.</p>
+                </div>
+              </motion.div>
+            </FadeIn>
+
+            {/* Feature 5 */}
+            <FadeIn delay={0.4}>
+              <motion.div 
+                className="group relative overflow-hidden rounded-3xl border border-border/50 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 flex flex-col h-full cursor-pointer"
+                whileHover={{ 
+                  scale: 1.02,
+                  rotateX: 5,
+                  rotateY: 5,
+                  transition: { duration: 0.3 }
+                }}
+                style={{ perspective: "1000px" }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Link href="/portfolios" className="absolute inset-0 z-20" aria-label="View Builder Portfolios"></Link>
+                <div className="relative h-[220px] w-full overflow-hidden border-b border-border/50">
+                  <Image
+                    src="/images/portfolios.png"
+                    alt="Builder Portfolios"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <motion.div 
+                    className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity"
+                    animate={{ opacity: [0, 0.5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 2.0 }}
+                  />
+                </div>
+                <div className="p-8 flex-1 flex flex-col relative z-10">
+                  <motion.div 
+                    className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:rotate-6 group-hover:scale-110 shadow-sm"
+                    whileHover={{ rotate: 360, scale: 1.2 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <Layout className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors" />
+                  </motion.div>
+                  <motion.h3 
+                    className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors"
+                    whileHover={{ x: 5 }}
+                  >
+                    Builder Portfolios
+                  </motion.h3>
+                  <p className="text-muted-foreground flex-1 leading-relaxed">Customize a striking developer profile to showcase repositories, case studies, and career milestones easily.</p>
+                </div>
+              </motion.div>
+            </FadeIn>
+
+            {/* Feature 6 */}
+            <FadeIn delay={0.5}>
+              <motion.div 
+                className="group relative overflow-hidden rounded-3xl border border-border/50 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 flex flex-col h-full cursor-pointer"
+                whileHover={{ 
+                  scale: 1.02,
+                  rotateX: -5,
+                  rotateY: -5,
+                  transition: { duration: 0.3 }
+                }}
+                style={{ perspective: "1000px" }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Link href="/matching" className="absolute inset-0 z-20" aria-label="View Automated Matching"></Link>
+                <div className="relative h-[220px] w-full overflow-hidden border-b border-border/50">
+                  <Image
+                    src="/images/matching.png"
+                    alt="Automated Matching"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <motion.div 
+                    className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity"
+                    animate={{ opacity: [0, 0.5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 2.5 }}
+                  />
+                </div>
+                <div className="p-8 flex-1 flex flex-col relative z-10">
+                  <motion.div 
+                    className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:-rotate-6 group-hover:scale-110 shadow-sm"
+                    whileHover={{ rotate: -360, scale: 1.2 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <Target className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors" />
+                  </motion.div>
+                  <motion.h3 
+                    className="mb-3 text-2xl font-bold group-hover:text-primary transition-colors"
+                    whileHover={{ x: 5 }}
+                  >
+                    Automated Matching
+                  </motion.h3>
+                  <p className="text-muted-foreground flex-1 leading-relaxed">Let our smart algorithms match your unique skillset with startups actively searching for developers like you.</p>
                 </div>
               </motion.div>
             </FadeIn>

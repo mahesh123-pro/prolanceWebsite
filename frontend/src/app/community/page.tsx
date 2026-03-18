@@ -59,6 +59,41 @@ export default function CommunityPage() {
     return (
         <div className="bg-muted/10 min-h-screen">
             <div className="container mx-auto px-4 py-12 max-w-7xl">
+                
+                {/* Header & What you get */}
+                <div className="mb-16">
+                    <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 text-center lg:text-left">The Developer Community</h1>
+                    <p className="text-muted-foreground text-lg mb-12 text-center lg:text-left">Ask questions, share breakthroughs, and join a vibrant network of builders.</p>
+                    
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {[
+                            {
+                                icon: <MessageSquare className="h-6 w-6 text-primary" />,
+                                title: "Instant Feedback",
+                                desc: "Get your code reviewed, debug architecture blockages, and gather opinions from Senior Engineers in minutes."
+                            },
+                            {
+                                icon: <ThumbsUp className="h-6 w-6 text-primary" />,
+                                title: "Reputation Building",
+                                desc: "Earn upvotes for high-quality answers. Build a permanent public track record of your expertise and helpfulness."
+                            },
+                            {
+                                icon: <TrendingUp className="h-6 w-6 text-primary" />,
+                                title: "Trending Insights",
+                                desc: "Stay ahead of the curve. Discover which frameworks, libraries, and design patterns are actually being adopted in production."
+                            }
+                        ].map((benefit, idx) => (
+                            <div key={idx} className="p-6 rounded-3xl border border-border/50 bg-background/80 backdrop-blur-md shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-500 animate-in fade-in slide-in-from-bottom-8" style={{ animationDelay: `${idx * 150}ms`, animationFillMode: 'both' }}>
+                                <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+                                    {benefit.icon}
+                                </div>
+                                <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
+                                <p className="text-muted-foreground font-medium text-sm leading-relaxed">{benefit.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 <div className="grid lg:grid-cols-4 gap-10">
 
                     {/* Sidebar - Navigation */}
