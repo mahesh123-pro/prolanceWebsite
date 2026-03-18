@@ -91,32 +91,32 @@ const GlobalNetworkSVG = () => (
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-12px); }
       }
-      .node-glow { filter: drop-shadow(0 0 10px hsl(var(--primary) / 0.7)); }
-      .path-glow { filter: drop-shadow(0 0 6px hsl(var(--primary) / 0.4)); }
+      .node-glow { filter: drop-shadow(0 0 10px var(--primary)); opacity: 0.9; }
+      .path-glow { filter: drop-shadow(0 0 6px var(--primary)); opacity: 0.8; }
     `}} />
     <svg viewBox="50 -100 1100 800" className="w-[120%] h-auto md:w-full max-w-5xl" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
       <defs>
         <linearGradient id="lineGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.1" />
-          <stop offset="50%" stopColor="hsl(var(--primary))" stopOpacity="0.8" />
-          <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.1" />
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.1" />
+          <stop offset="50%" stopColor="var(--primary)" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.1" />
         </linearGradient>
         <linearGradient id="lineGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0" />
-          <stop offset="50%" stopColor="hsl(var(--primary))" stopOpacity="1" />
-          <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0" />
+          <stop offset="50%" stopColor="var(--primary)" stopOpacity="1" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
         </linearGradient>
         <radialGradient id="nodeGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="1" />
-          <stop offset="80%" stopColor="hsl(var(--primary))" stopOpacity="0.8" />
-          <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.2" />
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="1" />
+          <stop offset="80%" stopColor="var(--primary)" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.2" />
         </radialGradient>
       </defs>
 
       {/* Abstract Background Elements */}
-      <circle cx="600" cy="300" r="350" fill="hsl(var(--primary))" opacity="0.02" className="animate-pulse" style={{ animationDuration: '7s' }} />
-      <circle cx="600" cy="300" r="250" fill="hsl(var(--primary))" opacity="0.04" className="animate-pulse" style={{ animationDuration: '5s' }} />
-      <circle cx="600" cy="300" r="150" fill="transparent" stroke="hsl(var(--primary))" strokeWidth="1" opacity="0.1" strokeDasharray="4 8" className="animate-[spin_40s_linear_infinite] origin-center" />
+      <circle cx="600" cy="300" r="350" fill="var(--primary)" opacity="0.02" className="animate-pulse" style={{ animationDuration: '7s' }} />
+      <circle cx="600" cy="300" r="250" fill="var(--primary)" opacity="0.04" className="animate-pulse" style={{ animationDuration: '5s' }} />
+      <circle cx="600" cy="300" r="150" fill="transparent" stroke="var(--primary)" strokeWidth="1" opacity="0.1" strokeDasharray="4 8" className="animate-[spin_40s_linear_infinite] origin-center" />
 
       {/* Network Connections */}
       <g fill="none" className="path-glow">
@@ -134,40 +134,142 @@ const GlobalNetworkSVG = () => (
       <g className="node-glow" fill="url(#nodeGrad)">
         {/* Main Central Nodes */}
         <g style={{ animation: 'svgFloat 6s ease-in-out infinite' }} className="origin-center">
-          <circle cx="600" cy="300" r="22" fill="url(#nodeGrad)" stroke="hsl(var(--background))" strokeWidth="4" />
-          <circle cx="600" cy="300" r="45" fill="none" stroke="hsl(var(--primary))" strokeWidth="1.5" opacity="0.5" className="animate-[ping_4s_ease-in-out_infinite]" />
+          <circle cx="600" cy="300" r="22" fill="url(#nodeGrad)" stroke="var(--background)" strokeWidth="4" />
+          <circle cx="600" cy="300" r="45" fill="none" stroke="var(--primary)" strokeWidth="1.5" opacity="0.5" className="animate-[ping_4s_ease-in-out_infinite]" />
         </g>
 
         {/* Secondary Nodes */}
         <g style={{ animation: 'svgFloat 5s ease-in-out infinite 1s' }}>
-          <circle cx="350" cy="180" r="14" stroke="hsl(var(--background))" strokeWidth="3" />
+          <circle cx="350" cy="180" r="14" stroke="var(--background)" strokeWidth="3" />
         </g>
         <g style={{ animation: 'svgFloat 7s ease-in-out infinite 0.5s' }}>
-          <circle cx="850" cy="420" r="16" stroke="hsl(var(--background))" strokeWidth="3" />
+          <circle cx="850" cy="420" r="16" stroke="var(--background)" strokeWidth="3" />
         </g>
         <g style={{ animation: 'svgFloat 4s ease-in-out infinite 2s' }}>
-          <circle cx="500" cy="350" r="12" stroke="hsl(var(--background))" strokeWidth="2.5" className="animate-pulse" />
+          <circle cx="500" cy="350" r="12" stroke="var(--background)" strokeWidth="2.5" className="animate-pulse" />
         </g>
         <g style={{ animation: 'svgFloat 6s ease-in-out infinite 1.5s' }}>
-          <circle cx="750" cy="250" r="14" stroke="hsl(var(--background))" strokeWidth="3" />
+          <circle cx="750" cy="250" r="14" stroke="var(--background)" strokeWidth="3" />
         </g>
 
         {/* End Nodes */}
-        <circle cx="150" cy="300" r="10" stroke="hsl(var(--background))" strokeWidth="2" />
-        <circle cx="1050" cy="300" r="12" stroke="hsl(var(--background))" strokeWidth="2" />
-        <circle cx="100" cy="400" r="8" stroke="hsl(var(--background))" strokeWidth="1.5" className="animate-pulse" />
-        <circle cx="950" cy="180" r="10" stroke="hsl(var(--background))" strokeWidth="2" />
-        <circle cx="250" cy="150" r="8" stroke="hsl(var(--background))" strokeWidth="1.5" />
-        <circle cx="1100" cy="450" r="8" stroke="hsl(var(--background))" strokeWidth="1.5" className="animate-pulse" />
+        <circle cx="150" cy="300" r="10" stroke="var(--background)" strokeWidth="2" />
+        <circle cx="1050" cy="300" r="12" stroke="var(--background)" strokeWidth="2" />
+        <circle cx="100" cy="400" r="8" stroke="var(--background)" strokeWidth="1.5" className="animate-pulse" />
+        <circle cx="950" cy="180" r="10" stroke="var(--background)" strokeWidth="2" />
+        <circle cx="250" cy="150" r="8" stroke="var(--background)" strokeWidth="1.5" />
+        <circle cx="1100" cy="450" r="8" stroke="var(--background)" strokeWidth="1.5" className="animate-pulse" />
 
         {/* Polyline intersections */}
-        <circle cx="320" cy="220" r="6" stroke="hsl(var(--background))" strokeWidth="1.5" />
-        <circle cx="900" cy="380" r="6" stroke="hsl(var(--background))" strokeWidth="1.5" />
-        <circle cx="350" cy="450" r="5" stroke="hsl(var(--background))" strokeWidth="1" />
-        <circle cx="850" cy="450" r="7" stroke="hsl(var(--background))" strokeWidth="1.5" />
-        <circle cx="500" cy="150" r="7" stroke="hsl(var(--background))" strokeWidth="1.5" />
-        <circle cx="750" cy="150" r="7" stroke="hsl(var(--background))" strokeWidth="1.5" />
-        <circle cx="900" cy="200" r="5" stroke="hsl(var(--background))" strokeWidth="1" />
+        <circle cx="320" cy="220" r="6" stroke="var(--background)" strokeWidth="1.5" />
+        <circle cx="900" cy="380" r="6" stroke="var(--background)" strokeWidth="1.5" />
+        <circle cx="350" cy="450" r="5" stroke="var(--background)" strokeWidth="1" />
+        <circle cx="850" cy="450" r="7" stroke="var(--background)" strokeWidth="1.5" />
+        <circle cx="500" cy="150" r="7" stroke="var(--background)" strokeWidth="1.5" />
+        <circle cx="750" cy="150" r="7" stroke="var(--background)" strokeWidth="1.5" />
+        <circle cx="900" cy="200" r="5" stroke="var(--background)" strokeWidth="1" />
+      </g>
+    </svg>
+  </div>
+);
+
+const Floating3DCube = ({ className = "" }: { className?: string }) => (
+  <div className={`relative ${className}`}>
+    <style dangerouslySetInnerHTML={{
+      __html: `
+        @keyframes float3dCube {
+          0%, 100% { transform: translateY(0) rotateX(10deg) rotateY(0deg); }
+          50% { transform: translateY(-20px) rotateX(20deg) rotateY(10deg); }
+        }
+        .cube-glow { filter: drop-shadow(0 0 20px var(--primary)); opacity: 0.9; }
+      `
+    }} />
+    <svg viewBox="0 0 200 200" className="w-full h-full cube-glow" style={{ animation: 'float3dCube 6s ease-in-out infinite' }}>
+      <defs>
+        <linearGradient id="cubeTop" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.4" />
+        </linearGradient>
+        <linearGradient id="cubeLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.2" />
+        </linearGradient>
+        <linearGradient id="cubeRight" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.1" />
+        </linearGradient>
+      </defs>
+      
+      <polygon points="100,100 180,60 180,140 100,180" fill="url(#cubeRight)" stroke="var(--primary)" strokeWidth="1" />
+      <polygon points="100,100 20,60 20,140 100,180" fill="url(#cubeLeft)" stroke="var(--primary)" strokeWidth="1" />
+      <polygon points="100,20 180,60 100,100 20,60" fill="url(#cubeTop)" stroke="var(--primary)" strokeWidth="1" />
+      
+      <polygon points="100,40 160,70 100,100 40,70" fill="none" stroke="var(--foreground)" strokeWidth="1" opacity="0.5" />
+      <line x1="100" y1="100" x2="100" y2="160" stroke="var(--foreground)" strokeWidth="1" opacity="0.5" />
+      
+      <circle cx="100" cy="20" r="3" fill="var(--primary)" />
+      <circle cx="20" cy="60" r="3" fill="var(--primary)" />
+      <circle cx="180" cy="60" r="3" fill="var(--primary)" />
+      <circle cx="100" cy="180" r="3" fill="var(--primary)" />
+    </svg>
+  </div>
+);
+
+const Abstract3DRings = ({ className = "" }: { className?: string }) => (
+  <div className={`relative ${className}`}>
+    <style dangerouslySetInnerHTML={{
+      __html: `
+        @keyframes spin3dRings {
+          0% { transform: rotateX(60deg) rotateY(0deg) rotateZ(0deg); }
+          100% { transform: rotateX(60deg) rotateY(360deg) rotateZ(360deg); }
+        }
+      `
+    }} />
+    <svg viewBox="0 0 200 200" className="w-full h-full" style={{ perspective: '500px' }}>
+      <g style={{ transformStyle: 'preserve-3d', animation: 'spin3dRings 20s linear infinite', transformOrigin: 'center' }}>
+        <ellipse cx="100" cy="100" rx="80" ry="30" fill="none" stroke="var(--primary)" strokeWidth="2" opacity="0.8" />
+        <ellipse cx="100" cy="100" rx="30" ry="80" fill="none" stroke="var(--primary)" strokeWidth="2" opacity="0.6" style={{ transform: 'rotate(45deg)', transformOrigin: 'center' }} />
+        <ellipse cx="100" cy="100" rx="30" ry="80" fill="none" stroke="var(--primary)" strokeWidth="2" opacity="0.4" style={{ transform: 'rotate(-45deg)', transformOrigin: 'center' }} />
+        <circle cx="100" cy="100" r="20" fill="var(--primary)" opacity="0.2" className="animate-pulse" />
+      </g>
+    </svg>
+  </div>
+);
+
+const Floating3DPyramid = ({ className = "" }: { className?: string }) => (
+  <div className={`relative ${className}`}>
+    <style dangerouslySetInnerHTML={{
+      __html: `
+        @keyframes floatPyramid {
+          0%, 100% { transform: translateY(0) rotateY(0deg); }
+          50% { transform: translateY(-15px) rotateY(15deg); }
+        }
+      `
+    }} />
+    <svg viewBox="0 0 200 200" className="w-full h-full" style={{ filter: 'drop-shadow(0 15px 15px var(--primary))' }}>
+      <defs>
+        <linearGradient id="pyrFront" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.3" />
+        </linearGradient>
+        <linearGradient id="pyrBack" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.1" />
+        </linearGradient>
+        <linearGradient id="pyrShadow" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0" />
+          <stop offset="50%" stopColor="var(--primary)" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <g style={{ transformOrigin: 'center', animation: 'floatPyramid 8s ease-in-out infinite' }}>
+        <ellipse cx="100" cy="160" rx="50" ry="15" fill="url(#pyrShadow)" />
+        <polygon points="100,30 40,140 100,120" fill="url(#pyrBack)" stroke="var(--primary)" strokeWidth="0.5" opacity="0.6" />
+        <polygon points="100,30 160,140 100,120" fill="url(#pyrBack)" stroke="var(--primary)" strokeWidth="0.5" opacity="0.3" />
+        <polygon points="100,30 40,140 100,160" fill="url(#pyrFront)" stroke="var(--primary)" strokeWidth="1" />
+        <polygon points="100,30 160,140 100,160" fill="url(#pyrFront)" stroke="var(--primary)" strokeWidth="1" opacity="0.8" />
+        <circle cx="100" cy="30" r="4" fill="var(--primary)" className="animate-ping" />
+        <circle cx="100" cy="30" r="4" fill="white" />
       </g>
     </svg>
   </div>
@@ -641,6 +743,51 @@ export default function Home() {
                   <p className="text-muted-foreground flex-1 leading-relaxed">Access high-quality learning materials, developer roadmaps, and interview prep tutorials to stay consistently ahead.</p>
                 </div>
               </motion.div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* 3D Innovation Elements Section */}
+      <section className="py-24 relative overflow-hidden bg-background text-foreground">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/10" />
+        <div className="container px-4 md:px-6 mx-auto relative z-10">
+          <FadeIn className="text-center mb-16">
+            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-foreground inline-block">
+              Modern Tech Infrastructure
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-[46rem] mx-auto font-medium">
+              We leverage cutting-edge tools to provide a seamless, high-performance experience.
+            </p>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+            {/* 3D Element 1 */}
+            <FadeIn delay={0.1} direction="up" className="flex flex-col items-center text-center group cursor-pointer">
+              <div className="w-48 h-48 mb-6 relative transition-transform duration-500 group-hover:scale-110">
+                <Floating3DCube className="w-full h-full" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors text-foreground">Robust Architecture</h3>
+              <p className="text-muted-foreground">Built on solid foundations ensuring 99.9% uptime and enterprise-grade security for your data.</p>
+            </FadeIn>
+
+            {/* 3D Element 2 */}
+            <FadeIn delay={0.3} direction="up" className="flex flex-col items-center text-center group cursor-pointer">
+              <div className="w-56 h-56 mb-6 relative flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
+                 <Abstract3DRings className="w-full h-full drop-shadow-[0_0_15px_var(--primary)]" />
+                 <div className="absolute inset-0 bg-primary/10 blur-[40px] rounded-full -z-10 animate-pulse" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors text-foreground">Global Sync</h3>
+              <p className="text-muted-foreground">Real-time synchronization across an abstract network ring of distributed servers worldwide.</p>
+            </FadeIn>
+
+            {/* 3D Element 3 */}
+            <FadeIn delay={0.5} direction="up" className="flex flex-col items-center text-center group cursor-pointer">
+              <div className="w-48 h-48 mb-6 relative transition-transform duration-500 group-hover:scale-110">
+                 <Floating3DPyramid className="w-full h-full" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors text-foreground">Scalable Solutions</h3>
+              <p className="text-muted-foreground">Our infrastructure scales dynamically from student side-projects to enterprise applications.</p>
             </FadeIn>
           </div>
         </div>
