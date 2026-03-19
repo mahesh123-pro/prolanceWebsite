@@ -64,10 +64,28 @@ export function Footer() {
                 </div>
 
                 <div className="pt-8 border-t border-border/40 flex flex-col md:flex-row items-center justify-between text-sm text-muted-foreground font-medium">
-                    <p>© {new Date().getFullYear()} Prolance Network. All rights reserved.</p>
-                    <p className="mt-4 md:mt-0 flex items-center">
-                        Built with <span className="text-destructive mx-1 animate-pulse">❤</span> for developers
-                    </p>
+                    <p className="mb-4 md:mb-0 text-center md:text-left">© {new Date().getFullYear()} Prolance Network. All rights reserved.</p>
+                    <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
+                        <p className="flex items-center">
+                            Built with <span className="text-destructive mx-1 animate-pulse">❤</span> for developers
+                        </p>
+                        <span className="hidden sm:inline-block text-border">|</span>
+                        <p className="flex items-center text-center">
+                            Developed by 
+                            <a 
+                                href="https://mahessh.me/" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="ml-1.5 font-semibold text-foreground hover:text-primary transition-colors group flex items-center"
+                                title="Mahesh | Full-Stack Developer & Cloud Engineer"
+                            >
+                                Mahesh
+                                <span className="ml-1.5 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] uppercase tracking-wider hidden lg:inline-block group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                                    Full-Stack & Cloud
+                                </span>
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </footer>

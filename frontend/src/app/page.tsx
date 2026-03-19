@@ -908,20 +908,21 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24 bg-background relative z-20 overflow-hidden">
-        <div className="container px-4 md:px-6 mx-auto">
-          <FadeIn className="text-center mb-16">
-            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl mb-6">Loved by our beta users</h2>
+      <section className="section section-dark relative z-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-primary/5" />
+        <div className="container px-4 md:px-6 mx-auto relative z-10">
+          <FadeIn className="text-center mb-16 fade-in">
+            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl mb-6 text-foreground">Loved by our beta users</h2>
             <p className="text-xl text-muted-foreground max-w-[46rem] mx-auto font-medium">
               See what student developers and recruiters are already saying about their experience on Prolance.
             </p>
           </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid-layout">
             {/* Testimonial 1 */}
             <FadeIn delay={0.1}>
               <motion.div 
-                className="bg-muted/30 border border-border/50 rounded-3xl p-8 relative flex flex-col h-full hover:shadow-lg transition-all cursor-pointer"
+                className="card-glass p-8 relative flex flex-col h-full group"
                 whileHover={{ 
                   scale: 1.02,
                   y: -5,
@@ -990,7 +991,7 @@ export default function Home() {
             {/* Testimonial 2 - Featured */}
             <FadeIn delay={0.2}>
               <motion.div 
-                className="bg-primary border border-primary-foreground/10 rounded-3xl p-8 relative flex flex-col h-full shadow-xl shadow-primary/20 text-primary-foreground transform md:-translate-y-4 cursor-pointer"
+                className="card-glass bg-gradient-to-br from-primary/20 via-primary/5 to-transparent border-primary/30 p-8 relative flex flex-col h-full transform md:-translate-y-4 group"
                 whileHover={{ 
                   scale: 1.03,
                   y: -8,
@@ -1008,17 +1009,17 @@ export default function Home() {
                   <Quote className="h-full w-full" />
                 </motion.div>
                 <motion.div 
-                  className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center"
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg shadow-yellow-400/20"
                   animate={{ 
                     rotate: [0, 360],
                     scale: [1, 1.2, 1]
                   }}
                   transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
                 >
-                  <Star className="h-3 w-3 text-primary fill-primary" />
+                  <Star className="h-3 w-3 text-background fill-background" />
                 </motion.div>
                 <motion.p 
-                  className="text-lg leading-relaxed mb-6 flex-1"
+                  className="text-lg leading-relaxed mb-6 flex-1 text-foreground/90 whitespace-pre-line"
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
@@ -1048,14 +1049,14 @@ export default function Home() {
                   </motion.div>
                   <div>
                     <motion.h4 
-                      className="font-bold"
+                      className="font-bold text-foreground"
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.2 }}
                     >
                       Mark T.
                     </motion.h4>
                     <motion.p 
-                      className="text-sm opacity-80"
+                      className="text-sm text-primary opacity-90"
                       animate={{ opacity: [0.6, 1, 0.6] }}
                       transition={{ duration: 3, repeat: Infinity, delay: 1 }}
                     >
@@ -1069,7 +1070,7 @@ export default function Home() {
             {/* Testimonial 3 */}
             <FadeIn delay={0.3}>
               <motion.div 
-                className="bg-muted/30 border border-border/50 rounded-3xl p-8 relative flex flex-col h-full hover:shadow-lg transition-all cursor-pointer"
+                className="card-glass p-8 relative flex flex-col h-full group"
                 whileHover={{ 
                   scale: 1.02,
                   y: -5,

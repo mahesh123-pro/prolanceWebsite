@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import Testimonial from '@/models/Testimonial';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: Request) {
     const authHeader = req.headers.get('Authorization');
 
@@ -16,6 +18,7 @@ export async function GET(req: Request) {
         const testimonials = await Testimonial.find().sort({ createdAt: -1 });
         return NextResponse.json(testimonials);
     } catch (err: any) {
+        console.error("Testimonials GET Error:", err);
         return NextResponse.json({ error: err.message }, { status: 500 });
     }
 }
