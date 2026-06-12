@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Twitter, Instagram, Linkedin, Github } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Github, Mail } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export function Footer() {
@@ -27,6 +27,7 @@ export function Footer() {
                             The exclusive networking hub bridging the gap between student developers, early-career engineers, and innovative tech startups.
                         </p>
                         <div className="flex items-center space-x-4 pt-2">
+                            <a href="mailto:kolim5263@gmail.com" className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 hover:-translate-y-1 shadow-sm"><Mail className="h-4 w-4" /></a>
                             <a href="#" className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 hover:-translate-y-1 shadow-sm"><Twitter className="h-4 w-4" /></a>
                             <a href="#" className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 hover:-translate-y-1 shadow-sm"><Linkedin className="h-4 w-4" /></a>
                             <a href="#" className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 hover:-translate-y-1 shadow-sm"><Github className="h-4 w-4" /></a>
@@ -49,6 +50,7 @@ export function Footer() {
                         <ul className="space-y-4 text-sm font-medium text-muted-foreground">
                             <li><Link href="/about" className="inline-flex items-center group hover:text-primary transition-colors duration-300"><span className="w-0 overflow-hidden group-hover:w-3 transition-all duration-300 group-hover:mr-1">›</span>Our Story</Link></li>
                             <li><Link href="#contact" className="inline-flex items-center group hover:text-primary transition-colors duration-300"><span className="w-0 overflow-hidden group-hover:w-3 transition-all duration-300 group-hover:mr-1">›</span>Contact Us</Link></li>
+                            <li><a href="mailto:kolim5263@gmail.com" className="inline-flex items-center group hover:text-primary transition-colors duration-300"><span className="w-0 overflow-hidden group-hover:w-3 transition-all duration-300 group-hover:mr-1">›</span>kolim5263@gmail.com</a></li>
                             <li><Link href="#careers" className="inline-flex items-center group hover:text-primary transition-colors duration-300"><span className="w-0 overflow-hidden group-hover:w-3 transition-all duration-300 group-hover:mr-1">›</span>Careers</Link></li>
                         </ul>
                     </div>
